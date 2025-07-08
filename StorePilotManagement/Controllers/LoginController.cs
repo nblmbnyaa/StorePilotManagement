@@ -1,18 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using StorePilotManagement.Models;
 using StorePilotTables.Tables;
 using StorePilotTables.Utilities;
 
 namespace StorePilotManagement.Controllers
 {
-    public class LoginController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class LoginController : ControllerBase
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         private readonly IConfiguration _configuration;
 
         public LoginController(IConfiguration configuration)
@@ -47,7 +46,24 @@ namespace StorePilotManagement.Controllers
                             UzunAdi = kullanicilar.UzunAdi,
                             Uuid = Guid.NewGuid().ToString(),
                         };
-                        //TODO Oturum bilgilerini veritabanına kaydet
+                        OTURUM_HAREKETLERI oturumHareketleri = new OTURUM_HAREKETLERI(null);
+                        oturumHareketleri.Temizle();
+                        oturumHareketleri.Uuid = Guid.NewGuid();
+                        oturumHareketleri.Token = oturum.Token;
+                        oturumHareketleri.KullaniciAdi = kullanicilar.KullaniciAdi;
+                        oturumHareketleri.CihazId = input.CihazId;
+                        oturumHareketleri.OlusmaZamani = DateTime.UtcNow;
+                        oturumHareketleri.GecerlilikZamani = oturum.GecerlilikZamani;
+                        oturumHareketleri.Id = oturumHareketleri.Insert(km);
+                        if (oturumHareketleri.Id <= 0)
+                        {
+                            return BadRequest(new ProblemDetails
+                            {
+                                Status = 400,
+                                Title = "Kayıt hatası",
+                                Detail = oturumHareketleri.hatamesaji,
+                            });
+                        }
                         return Ok(oturum);
                     }
                     else

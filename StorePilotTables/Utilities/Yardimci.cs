@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -179,7 +181,17 @@ namespace StorePilotTables.Utilities
         {
             return new DateTime(1899, 12, 30);
         }
-
+        public static string GetDescription(Enum value)
+        {
+            FieldInfo fi = value.GetType().GetField(value.ToString());
+            DescriptionAttribute[] attributes = (DescriptionAttribute[])fi.GetCustomAttributes(typeof(DescriptionAttribute), false);
+            string sonuc = "";
+            if (attributes.Length > 0)
+                sonuc = attributes[0].Description;
+            else
+                sonuc = value.ToString();
+            return sonuc;
+        }
         #endregion
     }
 }

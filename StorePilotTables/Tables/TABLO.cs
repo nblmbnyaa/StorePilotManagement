@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.Data.SqlClient;
 using StorePilotTables.Utilities;
 
-namespace Tables.Tablolar
+namespace StorePilotTables.Tables
 {
     public class TABLO
     {
