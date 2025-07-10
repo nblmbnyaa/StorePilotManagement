@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace StorePilotTables.Tables
 {
-    public class KULLANICILAR : TABLO
+    public class ROLLER : TABLO
     {
-
-        public KULLANICILAR(SqlCommand km) : base(km)
+        public ROLLER(SqlCommand km) : base(km)
         {
             IndexCreate(km, new TabloIndex
             {
@@ -19,13 +18,6 @@ namespace StorePilotTables.Tables
                 IsClustered = false,
                 IsUnique = true,
                 Name = "IX_#TABLO#_01"
-            });
-            IndexCreate(km, new TabloIndex
-            {
-                IndexColumns = new List<string> { nameof(KullaniciAdi) },
-                IsClustered = false,
-                IsUnique = true,
-                Name = "IX_#TABLO#_02"
             });
         }
 
@@ -35,11 +27,7 @@ namespace StorePilotTables.Tables
         [Description("uniqueidentifier")] public Guid OlusturanUuid { get; set; }
         [Description("datetime")] public DateTime SonDegisiklikZamani { get; set; }
         [Description("uniqueidentifier")] public Guid SonDegistirenUuid { get; set; }
-        [Description("nvarchar-50")] public string KullaniciAdi { get; set; }
-        [Description("nvarchar-MAX")] public string Sifre { get; set; }
-        [Description("nvarchar-150")] public string UzunAdi { get; set; }
-        [Description("nvarchar-50")] public string CihazId { get; set; }
-        [Description("nvarchar-MAX")] public string Roller { get; set; }
+        [Description("nvarchar-150")] public string Ad { get; set; }
         [Description("bit")] public bool PasifMi { get; set; }
 
     }

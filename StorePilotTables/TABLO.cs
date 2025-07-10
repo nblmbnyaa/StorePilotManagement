@@ -10,7 +10,7 @@ using Newtonsoft.Json;
 using Microsoft.Data.SqlClient;
 using StorePilotTables.Utilities;
 
-namespace StorePilotTables.Tables
+namespace StorePilotTables
 {
     public class TABLO
     {
@@ -65,11 +65,11 @@ namespace StorePilotTables.Tables
             var list = new List<string>();
             if (tabloAdi == "")
             {
-                tabloAdi = this.GetType().Name;
+                tabloAdi = GetType().Name;
             }
 
             var _IDENTITY = "Id";
-            foreach (PropertyInfo p in this.GetType().GetProperties())
+            foreach (PropertyInfo p in GetType().GetProperties())
             {
                 var field = new KeyValuePair<string, Type>(p.Name, p.PropertyType);
 
@@ -219,9 +219,9 @@ namespace StorePilotTables.Tables
 
             var Fields = new List<KeyValuePair<string, Type>>();
             var list = new List<string>();
-            var _className = this.GetType().Name;
+            var _className = GetType().Name;
             var _IDENTITY = "Id";
-            foreach (PropertyInfo p in this.GetType().GetProperties())
+            foreach (PropertyInfo p in GetType().GetProperties())
             {
                 var field = new KeyValuePair<string, Type>(p.Name, p.PropertyType);
 
@@ -323,7 +323,7 @@ namespace StorePilotTables.Tables
 
         public object Clone()
         {
-            return this.MemberwiseClone();
+            return MemberwiseClone();
         }
 
         public void Temizle()
@@ -335,12 +335,12 @@ namespace StorePilotTables.Tables
                 string description = Getdescription(pi[i]);
                 if (description == "")
                     continue;
-                if (pi[i].PropertyType == typeof(String) || pi[i].PropertyType == typeof(string))
+                if (pi[i].PropertyType == typeof(string) || pi[i].PropertyType == typeof(string))
                     GetType().GetProperty(name).SetValue(this, Convert.ChangeType("", pi[i].PropertyType), null);
 
-                else if (pi[i].PropertyType == typeof(Int16) ||
-                            pi[i].PropertyType == typeof(Int32) ||
-                            pi[i].PropertyType == typeof(Int64) ||
+                else if (pi[i].PropertyType == typeof(short) ||
+                            pi[i].PropertyType == typeof(int) ||
+                            pi[i].PropertyType == typeof(long) ||
                             pi[i].PropertyType == typeof(float) ||
                             pi[i].PropertyType == typeof(decimal) ||
                             pi[i].PropertyType == typeof(int) ||
@@ -349,17 +349,17 @@ namespace StorePilotTables.Tables
                             pi[i].PropertyType == typeof(short) ||
                             pi[i].PropertyType == typeof(byte) ||
                             pi[i].PropertyType == typeof(decimal) ||
-                            pi[i].PropertyType == typeof(Decimal) ||
-                            pi[i].PropertyType == typeof(Single))
+                            pi[i].PropertyType == typeof(decimal) ||
+                            pi[i].PropertyType == typeof(float))
                     GetType().GetProperty(name).SetValue(this, Convert.ChangeType(0, pi[i].PropertyType), null);
 
                 else if (pi[i].PropertyType == typeof(DateTime))
                     GetType().GetProperty(name).SetValue(this, Convert.ChangeType(DateTime.Now.bostarih(), pi[i].PropertyType), null);
 
-                else if (pi[i].PropertyType == typeof(bool) || pi[i].PropertyType == typeof(Boolean))
+                else if (pi[i].PropertyType == typeof(bool) || pi[i].PropertyType == typeof(bool))
                     GetType().GetProperty(name).SetValue(this, Convert.ChangeType(false, pi[i].PropertyType), null);
 
-                else if (pi[i].PropertyType == typeof(char) || pi[i].PropertyType == typeof(Char))
+                else if (pi[i].PropertyType == typeof(char) || pi[i].PropertyType == typeof(char))
                     GetType().GetProperty(name).SetValue(this, Convert.ChangeType("", pi[i].PropertyType), null);
 
                 else if (pi[i].PropertyType == typeof(Guid) || pi[i].PropertyType == typeof(Guid))
@@ -389,7 +389,7 @@ namespace StorePilotTables.Tables
                 string description = Getdescription(pi[i]);
                 if (description == "")
                     continue;
-                if (pi[i].PropertyType == typeof(String) || pi[i].PropertyType == typeof(string))
+                if (pi[i].PropertyType == typeof(string) || pi[i].PropertyType == typeof(string))
                 {
                     if (GetType().GetProperty(name).GetValue(this, null) != null)
                     {
@@ -784,11 +784,12 @@ namespace StorePilotTables.Tables
             }
             if (IndexColumns.Length == 0) return;
             IndexColumns = IndexColumns.Substring(0, IndexColumns.Length - 1);
+            string indexName = index.Name.Replace("#TABLO#", tablename);
 
-            km.CommandText = @"if not exists(select * from sys.indexes where name='" + index.Name.Replace("#TABLO#", tablename) + @"')
+            km.CommandText = @"if not exists(select * from sys.indexes where name='" + indexName + @"')
 begin
 
-CREATE NONCLUSTERED INDEX[" + index.Name + @"] ON[dbo].[" + tablename + @"]
+CREATE NONCLUSTERED INDEX[" + indexName + @"] ON[dbo].[" + tablename + @"]
 (
 
    " + IndexColumns + @"

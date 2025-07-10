@@ -1,4 +1,4 @@
-﻿namespace StorePilotManagement.Models
+﻿namespace StorePilotManagement.Models.Api
 {
     public class LoginModel
     {

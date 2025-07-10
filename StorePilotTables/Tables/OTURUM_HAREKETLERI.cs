@@ -15,14 +15,14 @@ namespace StorePilotTables.Tables
         {
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { "KullaniciUuid" },
+                IndexColumns = new List<string> { nameof(KullaniciUuid) },
                 IsClustered = false,
                 IsUnique = false,
                 Name = "IX_#TABLO#_01"
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { "Token" },
+                IndexColumns = new List<string> { nameof(Token) },
                 IsClustered = false,
                 IsUnique = false,
                 Name = "IX_#TABLO#_02"

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace StorePilotTables.Tables
 {
-    public class KULLANICILAR : TABLO
+    public class KULLANICI_ROLLERI : TABLO
     {
 
-        public KULLANICILAR(SqlCommand km) : base(km)
+        public KULLANICI_ROLLERI(SqlCommand km) : base(km)
         {
             IndexCreate(km, new TabloIndex
             {
@@ -22,12 +22,20 @@ namespace StorePilotTables.Tables
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { nameof(KullaniciAdi) },
+                IndexColumns = new List<string> { nameof(KullaniciUuid), nameof(RolUuid) },
                 IsClustered = false,
                 IsUnique = true,
                 Name = "IX_#TABLO#_02"
             });
+            IndexCreate(km, new TabloIndex
+            {
+                IndexColumns = new List<string> { nameof(KullaniciUuid) },
+                IsClustered = false,
+                IsUnique = false,
+                Name = "IX_#TABLO#_03"
+            });
         }
+
 
         [Description("int*")] public int Id { get; set; }
         [Description("uniqueidentifier")] public Guid Uuid { get; set; }
@@ -35,12 +43,8 @@ namespace StorePilotTables.Tables
         [Description("uniqueidentifier")] public Guid OlusturanUuid { get; set; }
         [Description("datetime")] public DateTime SonDegisiklikZamani { get; set; }
         [Description("uniqueidentifier")] public Guid SonDegistirenUuid { get; set; }
-        [Description("nvarchar-50")] public string KullaniciAdi { get; set; }
-        [Description("nvarchar-MAX")] public string Sifre { get; set; }
-        [Description("nvarchar-150")] public string UzunAdi { get; set; }
-        [Description("nvarchar-50")] public string CihazId { get; set; }
-        [Description("nvarchar-MAX")] public string Roller { get; set; }
-        [Description("bit")] public bool PasifMi { get; set; }
+        [Description("uniqueidentifier")] public Guid RolUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid KullaniciUuid { get; set; }
 
     }
 }

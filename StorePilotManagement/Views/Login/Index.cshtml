@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "StorePilot Giriş";
+}
+
+@{
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="container mt-5" style="max-width: 500px;">
+    @if (TempData["BasariMesaji"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["BasariMesaji"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @if (TempData["HataMesaji"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["HataMesaji"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    <div class="text-center mb-4">
+        <img src="~/images/store-pilot-logo.png" alt="StorePilot Logo" style="max-height: 200px;" />
+        <h2 class="mt-3">StorePilot</h2>
+        <p class="text-muted">Saha Operasyon Yönetim Sistemi</p>
+    </div>
+
+    <form method="post">
+        <div class="form-group mb-3">
+            <label for="kullaniciAdi">Kullanıcı Adı</label>
+            <input type="text" class="form-control" id="kullaniciAdi" name="kullaniciAdi" required />
+        </div>
+
+        <div class="form-group mb-3">
+            <label for="sifre">Şifre</label>
+            <input type="password" class="form-control" id="sifre" name="sifre" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Giriş Yap</button>
+    </form>
+</div>
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+
+}

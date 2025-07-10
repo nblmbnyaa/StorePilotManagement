@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using StorePilotManagement.Models;
+using StorePilotManagement.Models.Api;
 using StorePilotTables.Tables;
 using StorePilotTables.Utilities;
 using System.Data;
 
-namespace StorePilotManagement.Controllers
+namespace StorePilotManagement.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
