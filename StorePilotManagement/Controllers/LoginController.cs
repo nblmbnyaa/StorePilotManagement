@@ -50,7 +50,7 @@ namespace StorePilotManagement.Controllers
                         oturumHareketleri.Temizle();
                         oturumHareketleri.Uuid = Guid.NewGuid();
                         oturumHareketleri.Token = oturum.Token;
-                        oturumHareketleri.KullaniciAdi = kullanicilar.KullaniciAdi;
+                        oturumHareketleri.KullaniciUuid = kullanicilar.Uuid;
                         oturumHareketleri.CihazId = input.CihazId;
                         oturumHareketleri.OlusmaZamani = DateTime.UtcNow;
                         oturumHareketleri.GecerlilikZamani = oturum.GecerlilikZamani;
