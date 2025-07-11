@@ -7,7 +7,7 @@ using System.Data;
 
 namespace StorePilotManagement.Controllers.Web
 {
-    public class RolController : Controller
+    public class RolController : BaseController
     {
         private readonly IConfiguration _configuration;
 
@@ -81,7 +81,7 @@ namespace StorePilotManagement.Controllers.Web
                 roller.Ad = model.Ad;
                 roller.PasifMi = model.PasifMi;
                 roller.SonDegisiklikZamani = DateTime.Now;
-                roller.SonDegistirenUuid = Guid.Empty; // TODO: Oturumdan al
+                roller.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                 if (roller.Id > 0)
                 {
                     if (!roller.Update(km))
@@ -93,7 +93,7 @@ namespace StorePilotManagement.Controllers.Web
                 else
                 {
                     roller.OlusmaZamani = roller.SonDegisiklikZamani;
-                    roller.OlusturanUuid = Guid.Empty; // TODO: Oturumdan al
+                    roller.OlusturanUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                     roller.Uuid = Guid.NewGuid();
                     roller.Id = roller.Insert(km);
                     if (roller.Id <= 0)
@@ -164,7 +164,7 @@ namespace StorePilotManagement.Controllers.Web
                 roller.Ad = model.Ad;
                 roller.PasifMi = model.PasifMi;
                 roller.SonDegisiklikZamani = DateTime.Now;
-                roller.SonDegistirenUuid = Guid.Empty; // TODO: Oturumdan al
+                roller.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                 if (!roller.Update(km))
                 {
                     //hata 
@@ -195,7 +195,7 @@ namespace StorePilotManagement.Controllers.Web
                 }
                 roller.PasifMi = !roller.PasifMi; // Durumu tersine çevir
                 roller.SonDegisiklikZamani = DateTime.Now;
-                roller.SonDegistirenUuid = Guid.Empty; // TODO: Oturumdan al
+                roller.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                 if (!roller.Update(km))
                 {
                     // Hata

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using StorePilotManagement.Controllers.Web;
 using StorePilotManagement.Models.Api;
 using StorePilotTables.Tables;
 using StorePilotTables.Utilities;
@@ -10,7 +11,7 @@ namespace StorePilotManagement.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ZiyaretController : ControllerBase
+    public class ZiyaretController : BaseController
     {
         private readonly IConfiguration _configuration;
 

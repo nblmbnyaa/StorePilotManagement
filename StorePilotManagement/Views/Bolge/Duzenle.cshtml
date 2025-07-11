@@ -1,0 +1,46 @@
+﻿@using StorePilotManagement.ViewModels
+@model BolgeViewModel
+@{
+    ViewData["Title"] = "Bölge Düzenle";
+}
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}
+
+<h2>Bölge Düzenle</h2>
+
+<form asp-action="Duzenle" method="post">
+    <div class="form-group">
+        <label>Adı</label>
+        <input asp-for="Adi" class="form-control" />
+        <span asp-validation-for="Adi" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-2">Kaydet</button>
+    <a asp-action="Liste" class="btn btn-secondary mt-2">İptal</a>
+</form>

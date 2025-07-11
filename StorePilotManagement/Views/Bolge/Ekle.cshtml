@@ -1,5 +1,8 @@
 ﻿@using StorePilotManagement.ViewModels
-@model KullaniciViewModel
+@model BolgeViewModel
+@{
+    ViewData["Title"] = "Bölge Ekle";
+}
 
 @if (TempData["BasariMesaji"] != null)
 {
@@ -29,33 +32,15 @@
     </script>
 }
 
-<h2>Kullanıcı Ekle</h2>
+<h2>Bölge Ekle</h2>
 
 <form asp-action="Ekle" method="post">
     <div class="form-group">
-        <label>Kod</label>
-        <input asp-for="KullaniciAdi" class="form-control" />
-        <span asp-validation-for="KullaniciAdi" class="text-danger"></span>
+        <label>Adı</label>
+        <input asp-for="Adi" class="form-control" />
+        <span asp-validation-for="Adi" class="text-danger"></span>
     </div>
 
-    <div class="form-group">
-        <label>İsim</label>
-        <input asp-for="UzunAdi" class="form-control" />
-        <span asp-validation-for="UzunAdi" class="text-danger"></span>
-    </div>
-
-
-    <div class="form-group">
-        <label>Şifre</label>
-        <input asp-for="Sifre" type="password" class="form-control" />
-        <span asp-validation-for="Sifre" class="text-danger"></span>
-    </div>
-
-    <div class="form-group">
-        <label>Roller</label>
-        <select asp-for="SecilenRoller" asp-items="Model.TumRoller" multiple class="form-control"></select>
-        <span asp-validation-for="SecilenRoller" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success mt-3">Kaydet</button>
+    <button type="submit" class="btn btn-primary mt-2">Kaydet</button>
+    <a asp-action="Liste" class="btn btn-secondary mt-2">İptal</a>
 </form>

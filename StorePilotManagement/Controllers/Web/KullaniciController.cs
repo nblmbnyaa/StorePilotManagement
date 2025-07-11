@@ -10,7 +10,7 @@ using System.Data;
 
 namespace StorePilotManagement.Controllers.Web
 {
-    public class KullaniciController : Controller
+    public class KullaniciController : BaseController
     {
         private readonly IConfiguration _configuration;
 
@@ -121,7 +121,7 @@ namespace StorePilotManagement.Controllers.Web
                 kullanicilar.UzunAdi = model.UzunAdi;
                 kullanicilar.Sifre = Yardimci.Encrypt(model.Sifre);
                 kullanicilar.SonDegisiklikZamani = DateTime.Now;
-                kullanicilar.SonDegistirenUuid = Guid.NewGuid(); //TODO: Oturumdan al
+                kullanicilar.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                 kullanicilar.PasifMi = model.PasifMi;
                 kullanicilar.CihazId = model.CihazId;
                 if (kullanicilar.Id > 0)
@@ -141,7 +141,7 @@ namespace StorePilotManagement.Controllers.Web
                 {
                     kullanicilar.Uuid = Guid.NewGuid();
                     kullanicilar.OlusmaZamani = DateTime.Now;
-                    kullanicilar.OlusturanUuid = Guid.NewGuid();//TODO: Oturumdan al
+                    kullanicilar.OlusturanUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                     kullanicilar.Id = kullanicilar.Insert(km);
                     if (kullanicilar.Id <= 0)
                     {
@@ -168,9 +168,9 @@ namespace StorePilotManagement.Controllers.Web
                         kullaniciRol.KullaniciUuid = kullanicilar.Uuid;
                         kullaniciRol.RolUuid = rolId;
                         kullaniciRol.OlusmaZamani = DateTime.Now;
-                        kullaniciRol.OlusturanUuid = Guid.NewGuid(); //TODO: Oturumdan al
+                        kullaniciRol.OlusturanUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                         kullaniciRol.SonDegisiklikZamani = DateTime.Now;
-                        kullaniciRol.SonDegistirenUuid = Guid.NewGuid(); //TODO: Oturumdan al
+                        kullaniciRol.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                         kullaniciRol.Uuid = Guid.NewGuid();
                         kullaniciRol.Id = kullaniciRol.Insert(km);
                         if (kullaniciRol.Id <= 0)
@@ -220,7 +220,7 @@ WHERE KullaniciUuid = @KullaniciUuid AND RolUuid NOT IN ({rollerList})";
                 }
                 kullanicilar.PasifMi = !kullanicilar.PasifMi;
                 kullanicilar.SonDegisiklikZamani = DateTime.Now;
-                kullanicilar.SonDegistirenUuid = Guid.NewGuid(); // TODO: Oturumdan al
+                kullanicilar.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                 if (!kullanicilar.Update(km))
                 {
                     TempData["HataMesaji"] = "❌ Kullanıcı durumu güncellenemedi: " + kullanicilar.hatamesaji;
@@ -346,7 +346,7 @@ WHERE KullaniciUuid = @KullaniciUuid AND RolUuid NOT IN ({rollerList})";
                 kullanicilar.KullaniciAdi = model.KullaniciAdi;
                 kullanicilar.UzunAdi = model.UzunAdi;
                 kullanicilar.SonDegisiklikZamani = DateTime.Now;
-                kullanicilar.SonDegistirenUuid = Guid.NewGuid(); //TODO: Oturumdan al
+                kullanicilar.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                 kullanicilar.PasifMi = model.PasifMi;
                 kullanicilar.CihazId = model.CihazId;
 
@@ -377,9 +377,9 @@ WHERE KullaniciUuid = @KullaniciUuid AND RolUuid NOT IN ({rollerList})";
                         kullaniciRol.KullaniciUuid = kullanicilar.Uuid;
                         kullaniciRol.RolUuid = rolId;
                         kullaniciRol.OlusmaZamani = DateTime.Now;
-                        kullaniciRol.OlusturanUuid = Guid.NewGuid(); //TODO: Oturumdan al
+                        kullaniciRol.OlusturanUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                         kullaniciRol.SonDegisiklikZamani = DateTime.Now;
-                        kullaniciRol.SonDegistirenUuid = Guid.NewGuid(); //TODO: Oturumdan al
+                        kullaniciRol.SonDegistirenUuid = HttpContext.Session.GetString("KullaniciUuid").getguid();
                         kullaniciRol.Uuid = Guid.NewGuid();
                         kullaniciRol.Id = kullaniciRol.Insert(km);
                         if (kullaniciRol.Id <= 0)

@@ -1,16 +1,34 @@
 ﻿@{
-    ViewData["Title"] = "StorePilot Giriş";
+    ViewData["Title"] = "StorePilot Management";
 }
 
 <div class="container mt-5" style="max-width: 500px;">
     @if (TempData["BasariMesaji"] != null)
     {
-        <div class="alert alert-success">@TempData["BasariMesaji"]</div>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            @TempData["BasariMesaji"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     }
 
     @if (TempData["HataMesaji"] != null)
     {
-        <div class="alert alert-danger">@TempData["HataMesaji"]</div>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            @TempData["HataMesaji"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+
+    @section Scripts {
+        <script>
+            setTimeout(function () {
+                const alerts = document.querySelectorAll('.alert');
+                alerts.forEach(alert => {
+                    const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                    bsAlert.close();
+                });
+            }, 4000);
+        </script>
     }
 
     <div class="text-center mb-4">

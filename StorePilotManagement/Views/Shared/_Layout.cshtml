@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/StorePilotManagement.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </head>
 <body>
     <header>
@@ -30,6 +32,12 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-controller="Kullanici" asp-action="Liste">Kullanıcılar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Bolge" asp-action="Liste">Bölgeler</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Magaza" asp-action="Liste">Mağazalar</a>
                         </li>
                     </ul>
                 </div>

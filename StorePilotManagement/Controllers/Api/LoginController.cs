@@ -39,7 +39,7 @@ namespace StorePilotManagement.Controllers.Api
                         Oturum oturum = new Oturum
                         {
                             GecerlilikZamani = DateTime.UtcNow.AddHours(12),
-                            Roller = kullanicilar.Roller,
+                            Roller = "",//TODO Bu kısmı daha sonra düşüneceğim
                             Token = Guid.NewGuid(),
 
                             KullaniciAdi = kullanicilar.KullaniciAdi,
