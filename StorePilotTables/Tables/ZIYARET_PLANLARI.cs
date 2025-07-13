@@ -14,21 +14,21 @@ namespace StorePilotTables.Tables
         {
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { "Uuid" },
+                IndexColumns = new List<string> { nameof(Uuid) },
                 IsClustered = true,
                 IsUnique = true,
-                Name = "PK_#TABLO#_01"
+                Name = "IX_#TABLO#_01"
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { "KullaniciUuid", "Tarih" },
+                IndexColumns = new List<string> { nameof(KullaniciUuid), nameof(Tarih) },
                 IsClustered = false,
                 IsUnique = false,
                 Name = "IX_#TABLO#_02"
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { "MagazaUuid", "Tarih" },
+                IndexColumns = new List<string> { nameof(MagazaUuid), nameof(Tarih) },
                 IsClustered = false,
                 IsUnique = false,
                 Name = "IX_#TABLO#_03"
@@ -45,7 +45,7 @@ namespace StorePilotTables.Tables
         [Description("uniqueidentifier")] public Guid SonDegistirenUuid { get; set; }
         [Description("uniqueidentifier")] public Guid KullaniciUuid { get; set; }
         [Description("uniqueidentifier")] public Guid MagazaUuid { get; set; }
-        [Description("uniqueidentifier")] public Guid GorevGrubuUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid ProjeUuid { get; set; }
         [Description("nvarchar-MAX")] public string Detay { get; set; }
         [Description("datetime")] public DateTime Tarih { get; set; }
         [Description("datetime")] public DateTime PlanlananBaslangicSaati { get; set; }
@@ -56,6 +56,7 @@ namespace StorePilotTables.Tables
         [Description("nvarchar-MAX")] public string ZiyaretciNotlari { get; set; }
         [Description("nvarchar-MAX")] public string SorunBildirimi { get; set; }
         [Description("bit")] public bool PasifMi { get; set; }
+
 
 
 

@@ -161,6 +161,8 @@
 
         $(document).on('click', '.remove-yetkili', function () {
             if ($('.yetkili-item').length > 1) {
+                var indexedDB = $(this).closest('.yetkili-item').data('index');
+        
                 $(this).closest('.yetkili-item').remove();
             } else {
                 alert("En az bir yetkili olmalı.");

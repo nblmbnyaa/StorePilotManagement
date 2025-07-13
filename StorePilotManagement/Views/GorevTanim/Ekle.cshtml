@@ -1,0 +1,106 @@
+﻿@model StorePilotManagement.ViewModels.GorevTanimViewModel
+
+@{
+    ViewData["Title"] = "Yeni Görev Ekle";
+}
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2>Yeni Görev Ekle</h2>
+
+
+
+<form asp-action="Ekle" method="post">
+    <div class="mb-3">
+        <label asp-for="Adi" class="form-label">Adı</label>
+        <input asp-for="Adi" class="form-control" />
+        <span asp-validation-for="Adi" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Detay" class="form-label">Detay</label>
+        <textarea asp-for="Detay" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Detay" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ZorunluFotografSayisi" class="form-label">Zorunlu Fotoğraf Sayısı</label>
+        <input asp-for="ZorunluFotografSayisi" class="form-control" type="number" min="0" />
+        <span asp-validation-for="ZorunluFotografSayisi" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="OrtalamaSureSn" class="form-label">Ortalama Süre (Sn)</label>
+        <input asp-for="OrtalamaSureSn" class="form-control" type="number" min="0" />
+        <span asp-validation-for="OrtalamaSureSn" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AzamiSureSn" class="form-label">Azami Süre (Sn)</label>
+        <input asp-for="AzamiSureSn" class="form-control" type="number" min="0" />
+        <span asp-validation-for="AzamiSureSn" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Secenekler" class="form-label">Seçenekler</label>
+        <input asp-for="Secenekler" class="form-control" />
+        <small class="form-text text-muted">Seçenekleri "|" ile ayırınız (örnek: Seçenek1|Seçenek2|Seçenek3)</small>
+        <span asp-validation-for="Secenekler" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="IdealSecenek" class="form-label">İdeal Seçenek</label>
+        <input asp-for="IdealSecenek" class="form-control" />
+        <span asp-validation-for="IdealSecenek" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="FotografYapayZekaYonergesi" class="form-label">Fotoğraflar İçin Yapay Zeka Yönergesi</label>
+        <textarea asp-for="FotografYapayZekaYonergesi" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="FotografYapayZekaYonergesi" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Puan" class="form-label">Puan</label>
+        <input asp-for="Puan" class="form-control" type="number" step="any" />
+        <span asp-validation-for="Puan" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mb-3">
+        <input asp-for="PasifMi" class="form-check-input" />
+        <label asp-for="PasifMi" class="form-check-label">Pasif mi</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="Liste" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}

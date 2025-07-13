@@ -1,0 +1,138 @@
+﻿@using StorePilotManagement.ViewModels
+@model ZiyaretPlaniViewModel
+@{
+    ViewData["Title"] = "Ziyaret Planı Düzenle";
+}
+
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2>Ziyaret Planı Düzenle</h2>
+
+<form asp-action="Duzenle" method="post">
+    <input type="hidden" asp-for="Uuid" />
+
+    <div class="form-group mt-2">
+        <label>Mağaza</label>
+        <select asp-for="MagazaUuid" asp-items="Model.TumMagazalar" class="form-control"></select>
+        <span asp-validation-for="MagazaUuid" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Kullanıcı</label>
+        <select asp-for="KullaniciUuid" asp-items="Model.TumKullanicilar" class="form-control"></select>
+        <span asp-validation-for="KullaniciUuid" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Proje (İsteğe Bağlı)</label>
+        <select asp-for="ProjeUuid" asp-items="Model.TumProjeler" class="form-control">
+            <option value="">-- Seçiniz --</option>
+        </select>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Detay</label>
+        <textarea asp-for="Detay" rows="3" class="form-control"></textarea>
+        <span asp-validation-for="Detay" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Tarih</label>
+        <input asp-for="Tarih" type="date" class="form-control" />
+        <span asp-validation-for="Tarih" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Planlanan Başlangıç Saati</label>
+        <input asp-for="PlanlananBaslangicSaati" type="datetime-local" class="form-control" />
+        <span asp-validation-for="PlanlananBaslangicSaati" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-2">
+        <label>Planlanan Bitiş Saati</label>
+        <input asp-for="PlanlananBitisSaati" type="datetime-local" class="form-control" />
+        <span asp-validation-for="PlanlananBitisSaati" class="text-danger"></span>
+    </div>
+
+    <div class="form-check mt-2">
+        <input asp-for="PasifMi" class="form-check-input" />
+        <label asp-for="PasifMi" class="form-check-label">Pasif</label>
+    </div>
+
+    <fieldset class="border p-2 mt-4">
+        <legend class="w-auto px-2">Ziyaret Görevleri</legend>
+
+        <div id="detaylar">
+            @for (int i = 0; i < Model.Detaylar.Count; i++)
+            {
+                <div class="card p-3 mb-2 bg-light border">
+                    <input type="hidden" name="Detaylar[@i].Uuid" value="@Model.Detaylar[i].Uuid" />
+
+                    <div class="form-group">
+                        <label>Görev</label>
+                        <select asp-for="Detaylar[@i].GorevUuid" asp-items="Model.Detaylar[@i].TumGorevler" class="form-control"></select>
+                        <span asp-validation-for="Detaylar[@i].GorevUuid" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Açıklama</label>
+                        <textarea asp-for="Detaylar[@i].Aciklama" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Puan</label>
+                        <input asp-for="Detaylar[@i].Puan" type="number" step="0.01" class="form-control" />
+                    </div>
+                    <button type="button" class="btn btn-danger mt-2" onclick="removeDetay(this)">Sil</button>
+                </div>
+            }
+        </div>
+
+        <button type="button" class="btn btn-sm btn-secondary mt-2" onclick="addDetay()">Yeni Görev Ekle</button>
+        <span asp-validation-for="Detaylar" class="text-danger"></span>
+    </fieldset>
+
+    <button type="submit" class="btn btn-primary mt-4">Kaydet</button>
+    <a asp-action="Liste" class="btn btn-secondary mt-4">İptal</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function removeDetay(btn) {
+            btn.closest('.card').remove();
+        }
+
+        function addDetay() {
+            const index = document.querySelectorAll('#detaylar .card').length;
+            fetch('@Url.Action("YeniDetaySatiriPartial", "Ziyaret")?index=' + index)
+                .then(res => res.text())
+                .then(html => {
+                    const div = document.createElement('div');
+                    div.innerHTML = html;
+                    document.getElementById("detaylar").appendChild(div);
+                });
+        }
+
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}

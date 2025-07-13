@@ -1,0 +1,75 @@
+﻿@model List<StorePilotManagement.ViewModels.MagazaKategoriViewModel>
+
+@{
+    ViewData["Title"] = "Mağaza Kategorileri";
+}
+
+
+
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2>Mağaza Kategorileri</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Durum</th>
+            <th style="width:150px">İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Adi</td>
+                <td>
+                    @if (item.PasifMi)
+                    {
+                        <span class="badge bg-danger">Pasif</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-success">Aktif</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Duzenle" asp-route-uuid="@item.Uuid" class="btn btn-sm btn-warning me-2">Düzenle</a>
+                    <form asp-action="DegistirDurum" method="post" asp-route-uuid="@item.Uuid" style="display:inline;">
+                        <button type="submit" class="btn btn-sm btn-secondary">
+                            @(item.PasifMi ? "Aktif Yap" : "Pasif Yap")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="Ekle" class="btn btn-primary mb-3">Yeni Kategori Ekle</a>
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}

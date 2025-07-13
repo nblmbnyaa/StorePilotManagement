@@ -1,0 +1,80 @@
+﻿@model List<StorePilotManagement.ViewModels.GorevTanimViewModel>
+
+@{
+    ViewData["Title"] = "Görev Tanımları";
+}
+
+<h2>Görev Tanımları</h2>
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Görev Adı</th>
+            <th>Detay</th>
+            <th>Zorunlu Fotoğraf</th>
+            <th>Ortalama Süre (sn)</th>
+            <th>Azami Süre (sn)</th>
+            <th>Puan</th>
+            <th>Pasif</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Adi</td>
+                <td>@(item.Detay?.Length > 30 ? item.Detay.Substring(0, 30) + "..." : item.Detay)</td>
+                <td>@item.ZorunluFotografSayisi</td>
+                <td>@item.OrtalamaSureSn</td>
+                <td>@item.AzamiSureSn</td>
+                <td>@item.Puan</td>
+                <td>@(item.PasifMi ? "Evet" : "Hayır")</td>
+                <td>
+                    <a asp-action="Duzenle" asp-route-uuid="@item.Uuid" class="btn btn-sm btn-warning me-1">Düzenle</a>
+
+                    <form asp-action="DegistirDurum" method="post" style="display:inline">
+                        <input type="hidden" name="Uuid" value="@item.Uuid" />
+                        <button type="submit" class="btn btn-sm @(item.PasifMi ? "btn-success" : "btn-danger")">
+                            @(item.PasifMi ? "Aktif Yap" : "Pasif Yap")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a asp-action="Ekle" class="btn btn-primary">Yeni Görev Ekle</a>
+</p>
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}

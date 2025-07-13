@@ -1,0 +1,61 @@
+﻿@model StorePilotManagement.ViewModels.DolapTuruViewModel
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+<h2>Dolap Türü Düzenle</h2>
+
+<form asp-action="@ViewContext.RouteData.Values["action"]" method="post">
+    <input type="hidden" asp-for="Uuid" />
+    <div class="form-group">
+        <label>Adı</label>
+        <input asp-for="Adi" class="form-control" />
+        <span asp-validation-for="Adi" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Marka</label>
+        <input asp-for="Marka" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label>Hacim (L)</label>
+        <input asp-for="Hacim" class="form-control" type="number" step="0.01" />
+    </div>
+
+    <div class="form-group">
+        <label>Ölçüler</label>
+        <input asp-for="Olculer" class="form-control" />
+    </div>
+
+    <div class="form-check mt-2">
+        <input asp-for="PasifMi" class="form-check-input" />
+        <label asp-for="PasifMi" class="form-check-label">Pasif</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Kaydet</button>
+    <a asp-action="Liste" class="btn btn-secondary mt-3">İptal</a>
+</form>
+
+@section Scripts {
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            });
+        }, 4000);
+    </script>
+}

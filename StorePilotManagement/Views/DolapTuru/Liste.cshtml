@@ -1,0 +1,66 @@
+﻿@model List<StorePilotManagement.ViewModels.DolapTuruViewModel>
+
+<h2>Dolap Türleri</h2>
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+}
+
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Adı</th>
+            <th>Marka</th>
+            <th>Hacim (L)</th>
+            <th>Ölçüler</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Adi</td>
+                <td>@item.Marka</td>
+                <td>@item.Hacim</td>
+                <td>@item.Olculer</td>
+                <td>@(item.PasifMi ? "Pasif" : "Aktif")</td>
+                <td>
+                    <a asp-action="Duzenle" asp-route-uuid="@item.Uuid" class="btn btn-warning btn-sm">Düzenle</a>
+                    <form asp-action="DegistirDurum" asp-route-uuid="@item.Uuid" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-sm @(item.PasifMi ? "btn-success" : "btn-danger")">
+                            @(item.PasifMi ? "Aktif Yap" : "Pasif Yap")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary mb-3" asp-action="Ekle">Yeni Dolap Türü</a>
+
+
+@section Scripts {
+    <script>
+        setTimeout(() => {
+            document.querySelectorAll('.alert').forEach(alert => {
+                bootstrap.Alert.getOrCreateInstance(alert).close();
+            });
+        }, 4000);
+    </script>
+}

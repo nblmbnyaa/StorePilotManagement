@@ -1,0 +1,26 @@
+﻿@using StorePilotManagement.ViewModels
+@model ZiyaretPlanDetayViewModel
+@{
+    var index = (int)ViewData["Index"];
+}
+
+<div class="card p-3 mb-2 bg-light border">
+    <div class="form-group">
+        <label>Görev</label>
+        <select name="Detaylar[@index].GorevUuid" class="form-control">
+            @foreach (var item in Model.TumGorevler)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+    </div>
+    <div class="form-group mt-2">
+        <label>Açıklama</label>
+        <textarea name="Detaylar[@index].Aciklama" class="form-control" rows="2"></textarea>
+    </div>
+    <div class="form-group mt-2">
+        <label>Puan</label>
+        <input name="Detaylar[@index].Puan" type="number" step="0.01" class="form-control" />
+    </div>
+    <button type="button" class="btn btn-danger mt-2" onclick="removeDetay(this)">Sil</button>
+</div>

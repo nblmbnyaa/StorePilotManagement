@@ -275,10 +275,10 @@ namespace StorePilotTables
 
         }
 
-        public TABLO()
-        {
+        //public TABLO()
+        //{
 
-        }
+        //}
 
         public TABLO(SqlCommand km)
         {

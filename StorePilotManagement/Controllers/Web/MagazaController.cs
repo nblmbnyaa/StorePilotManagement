@@ -92,7 +92,7 @@ namespace StorePilotManagement.Controllers.Web
         {
             var model = new MagazaViewModel
             {
-                Yetkililer = new List<YetkiliViewModel> { new(), new() },
+                Yetkililer = new List<YetkiliViewModel> { new() },
                 TumBolgeler = GetBolgeler()
             };
             return View(model);
@@ -103,6 +103,16 @@ namespace StorePilotManagement.Controllers.Web
         {
             if (string.IsNullOrWhiteSpace(model.Adi))
                 ModelState.AddModelError(nameof(model.Adi), "Mağaza adı zorunludur.");
+
+            foreach (var state in ModelState)
+            {
+                foreach (var error in state.Value.Errors)
+                {
+                    TempData["HataMesaji"] = $"{state.Key}: {error.ErrorMessage}";
+                    model.TumBolgeler = GetBolgeler();
+                    return View(model);
+                }
+            }
 
             if (!ModelState.IsValid)
             {
@@ -276,6 +286,13 @@ namespace StorePilotManagement.Controllers.Web
         [HttpPost]
         public IActionResult Duzenle(MagazaViewModel model)
         {
+            model.Yetkililer = model.Yetkililer
+        .Where(y => !string.IsNullOrWhiteSpace(y.AdiSoyadi))
+        .ToList();
+            if (model.Yetkililer.Count == 0)
+            {
+                ModelState.AddModelError(nameof(model.Yetkililer), "En az bir yetkili eklenmelidir.");
+            }
 
             if (string.IsNullOrWhiteSpace(model.Adi))
             {
@@ -286,7 +303,9 @@ namespace StorePilotManagement.Controllers.Web
             {
                 foreach (var error in state.Value.Errors)
                 {
-                    Console.WriteLine($"{state.Key}: {error.ErrorMessage}");
+                    TempData["HataMesaji"] = $"{state.Key}: {error.ErrorMessage}";
+                    model.TumBolgeler = GetBolgeler();
+                    return View(model);
                 }
             }
 
@@ -384,7 +403,7 @@ namespace StorePilotManagement.Controllers.Web
 
                 // model.SecilenRoller içinde olmayıp önceden eklenmiş roller varsa onları sil
                 var yetkililerList = string.Join(",", model.Yetkililer.Where(x => x.Uuid != null).Select(r => $"'{r.Uuid}'"));
-                if (yetkililerList.Length>0)
+                if (yetkililerList.Length > 0)
                 {
                     km.CommandText = $@"
 DELETE FROM YETKILILER
@@ -393,7 +412,7 @@ WHERE MagazaUuid = @MagazaUuid AND Uuid NOT IN ({yetkililerList})";
                     km.Parameters.AddWithValue("@MagazaUuid", magazalar.Uuid);
                     int rowsAffected = km.ExecuteNonQuery();
                 }
-                
+
 
 
                 transaction.Commit();
