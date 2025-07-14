@@ -38,5 +38,28 @@ namespace StorePilotTables.Tables
         [Description("nvarchar-MAX")] public string CihazId { get; set; }
 
 
+
+        public bool TokenKontrol(SqlCommand km,Guid token)
+        {
+            km.CommandText = "SELECT * FROM OTURUM_HAREKETLERI WITH(NOLOCK) WHERE Token=@Token";
+            km.Parameters.Clear();
+            km.Parameters.AddWithValue("@Token", token);
+            if(!ReadData(km))
+            {
+                hatamesaji = "Geçersiz oturum. Lütfen tekrar giriş yapın.";
+                return false;
+            }
+            else
+            {
+                if (GecerlilikZamani > DateTime.Now)
+                {
+                    hatamesaji = "Oturum süresi dolmuş. Lütfen tekrar giriş yapın.";
+                    return false;
+                }
+
+                return true;
+
+            }
+
     }
 }

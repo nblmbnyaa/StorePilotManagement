@@ -32,27 +32,16 @@ namespace StorePilotManagement.Controllers.Api
                     var km = con.CreateCommand();
 
                     OTURUM_HAREKETLERI oturumHareketleri = new OTURUM_HAREKETLERI(null);
-                    km.CommandText = "select * from OTURUM_HAREKETLERI with(nolock) where Token=@Token";
-                    km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@Token", input.token);
-                    if (oturumHareketleri.ReadData(km))
+                    if (!oturumHareketleri.TokenKontrol(km, input.token))
                     {
                         return BadRequest(new ProblemDetails
                         {
                             Status = 400,
                             Title = "Hata",
-                            Detail = "Geçersiz oturum. Lütfen tekrar giriş yapın."
+                            Detail = oturumHareketleri.hatamesaji,
                         });
                     }
-                    if (oturumHareketleri.GecerlilikZamani > DateTime.Now)
-                    {
-                        return BadRequest(new ProblemDetails
-                        {
-                            Status = 400,
-                            Title = "Hata",
-                            Detail = "Oturum süresi dolmuş. Lütfen tekrar giriş yapın."
-                        });
-                    }
+
 
                     km.CommandText = @"select 
 zp.Uuid as ziyaretUuid
