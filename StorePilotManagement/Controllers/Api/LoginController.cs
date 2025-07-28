@@ -1,10 +1,13 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using StorePilotManagement.Models.Api;
 using StorePilotTables.Tables;
 using StorePilotTables.Utilities;
+using System.Data;
 
 namespace StorePilotManagement.Controllers.Api
 {
@@ -20,7 +23,7 @@ namespace StorePilotManagement.Controllers.Api
         }
 
         [HttpPost("GirisYap")]
-        public ActionResult<Oturum> GirisYap([FromBody] LoginModel input)
+        public ActionResult<Session> GirisYap([FromBody] LoginModel input)
         {
             try
             {
@@ -29,42 +32,97 @@ namespace StorePilotManagement.Controllers.Api
                 {
                     con.Open();
                     var km = con.CreateCommand();
-                    KULLANICILAR kullanicilar = new KULLANICILAR(null);
-                    km.CommandText = "SELECT * FROM KULLANICILAR with(nolock) WHERE KullaniciAdi = @KullaniciAdi AND Sifre = @Sifre";
+                    User user = new User(null);
+                    km.CommandText = "SELECT * FROM [User] with(nolock) WHERE userName = @userName AND password = @password";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@KullaniciAdi", input.Username);
-                    km.Parameters.AddWithValue("@Sifre", Yardimci.Encrypt(input.Password));
-                    if (kullanicilar.ReadData(km))
+                    km.Parameters.AddWithValue("@userName", input.Username);
+                    km.Parameters.AddWithValue("@password", Yardimci.Encrypt(input.Password));
+                    if (user.ReadData(km))
                     {
-                        Oturum oturum = new Oturum
-                        {
-                            GecerlilikZamani = DateTime.UtcNow.AddHours(12),
-                            Roller = "",//TODO Bu kısmı daha sonra düşüneceğim
-                            Token = Guid.NewGuid(),
 
-                            KullaniciAdi = kullanicilar.KullaniciAdi,
-                            UzunAdi = kullanicilar.UzunAdi,
-                            Uuid = Guid.NewGuid().ToString(),
-                        };
-                        OTURUM_HAREKETLERI oturumHareketleri = new OTURUM_HAREKETLERI(null);
-                        oturumHareketleri.Temizle();
-                        oturumHareketleri.Uuid = Guid.NewGuid();
-                        oturumHareketleri.Token = oturum.Token;
-                        oturumHareketleri.KullaniciUuid = kullanicilar.Uuid;
-                        oturumHareketleri.CihazId = input.CihazId;
-                        oturumHareketleri.OlusmaZamani = DateTime.UtcNow;
-                        oturumHareketleri.GecerlilikZamani = oturum.GecerlilikZamani;
-                        oturumHareketleri.Id = oturumHareketleri.Insert(km);
-                        if (oturumHareketleri.Id <= 0)
+
+                        List<Guid> roller = new List<Guid>();
+                        //km.CommandText = "SELECT RolUuid FROM KULLANICI_ROLLERI with(nolock) WHERE KullaniciUuid=@KullaniciUuid";
+                        //km.Parameters.Clear();
+                        //km.Parameters.AddWithValue("@KullaniciUuid", user.id);
+                        //DataTable dt = new DataTable();
+                        //using (SqlDataAdapter da = new SqlDataAdapter(km))
+                        //{
+                        //    da.Fill(dt);
+                        //}
+                        //foreach (DataRow row in dt.Rows)
+                        //{
+                        //    roller.Add(row["RolUuid"].getguid());
+                        //}
+
+                        Session session = new Session(null);
+                        session.Temizle();
+
+                        session.uuid = Guid.NewGuid();
+                        session.sessionId = Guid.NewGuid().ToString();
+                        session.userId = user.id;
+                        session.userName = user.userName;
+                        session.fullName = user.fullName;
+                        session.token = Guid.NewGuid().ToString();
+                        session.refreshToken = Guid.NewGuid().ToString();
+                        session.tokenExpiry = DateTime.UtcNow.AddHours(12); // 12 saat geçerli
+                        session.roles = JsonConvert.SerializeObject(roller);
+                        session.permissions = "[]"; // İzinler boş, gerekirse eklenebilir
+                        session.loginAt = DateTime.UtcNow;
+                        session.deviceId = input.deviceId;
+                        session.deviceModel = input.deviceModel;
+                        session.appVersion = input.appVersion;
+                        session.isDeleted = false; // Silinmemiş
+                        session.isSynced = true; // Senkronize edilmemiş
+                        session.createdAt = DateTime.UtcNow;
+                        session.updatedAt = DateTime.UtcNow;
+
+                        if (user.userType != StorePilotTables.Tables.User.UserType.Merchant.Tamsayi())
+                        {
+                            session.errorMessage = "Kullanıcı tipi uygun değil.";
+                        }
+
+                        if (user.deviceId != "")
+                        {
+                            if (user.deviceId != input.deviceId)
+                            {
+                                session.errorMessage = "Farklı cihazdan giriş yapmaya çalışıyorsunuz.";
+                            }
+                        }
+                        else
+                        {
+                            user.deviceId = input.deviceId; // Cihaz ID'si boş ise güncelle
+                            user.isActive = false; // Aktif olarak işaretle
+                            user.updatedAt = DateTime.UtcNow;
+                            if (!user.Update(km))
+                            {
+                                session.errorMessage = "Kullanıcı cihaz ID'si güncellenemedi: " + user.hatamesaji;
+                            }
+                        }
+
+                        session.id = session.Insert(km);
+                        if (session.id <= 0)
                         {
                             return BadRequest(new ProblemDetails
                             {
                                 Status = 400,
                                 Title = "Kayıt hatası",
-                                Detail = oturumHareketleri.hatamesaji,
+                                Detail = session.hatamesaji,
                             });
                         }
-                        return Ok(oturum);
+
+                        if (session.errorMessage != "")
+                        {
+                            return BadRequest(new ProblemDetails
+                            {
+                                Status = 400,
+                                Title = "Geçersiz Veri",
+                                Detail = session.errorMessage,
+                            });
+                        }
+
+
+                        return Ok(session);
                     }
                     else
                     {
@@ -76,7 +134,6 @@ namespace StorePilotManagement.Controllers.Api
                         });
                     }
                 }
-
             }
             catch (Exception ex)
             {

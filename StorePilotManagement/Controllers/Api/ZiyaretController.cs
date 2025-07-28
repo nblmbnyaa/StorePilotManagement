@@ -31,14 +31,14 @@ namespace StorePilotManagement.Controllers.Api
                     con.Open();
                     var km = con.CreateCommand();
 
-                    OTURUM_HAREKETLERI oturumHareketleri = new OTURUM_HAREKETLERI(null);
-                    if (!oturumHareketleri.TokenKontrol(km, input.token))
+                    Session session = new Session(null);
+                    if (!session.TokenKontrol(km, input.token))
                     {
                         return BadRequest(new ProblemDetails
                         {
                             Status = 400,
                             Title = "Hata",
-                            Detail = oturumHareketleri.hatamesaji,
+                            Detail = session.hatamesaji,
                         });
                     }
 
@@ -58,7 +58,7 @@ from ZIYARET_PLANLARI zp with(nolock)
 inner join MAGAZALAR m with(nolock) on m.Uuid=zp.MagazaUuid
 where KullaniciUuid=@KullaniciUuid and Tarih=@Tarih";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@KullaniciUuid", oturumHareketleri.KullaniciUuid);
+                    km.Parameters.AddWithValue("@KullaniciUuid", session.userId);
                     km.Parameters.AddWithValue("@Tarih", DateTime.Now.Date);
                     DataTable dt = new DataTable();
                     using (SqlDataAdapter da = new SqlDataAdapter(km))

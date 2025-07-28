@@ -1,0 +1,73 @@
+﻿@using StorePilotManagement.ViewModels
+@model StoreViewModel
+@{
+    ViewData["Title"] = "Firma Düzenle";
+}
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}
+
+<h2>Firma Düzenle</h2>
+
+<form asp-action="Edit" method="post">
+    <div class="form-group">
+        <label>Adı</label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Yasal Adı</label>
+        <input asp-for="LegalName" class="form-control" />
+        <span asp-validation-for="LegalName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Vergi Numarası</label>
+        <input asp-for="TaxNumber" class="form-control" />
+        <span asp-validation-for="TaxNumber" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Sorumlu Adı</label>
+        <input asp-for="ResponsibleName" class="form-control" />
+        <span asp-validation-for="ResponsibleName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Telefon</label>
+        <input asp-for="Phone" class="form-control" />
+        <span asp-validation-for="Phone" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label>Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-primary mt-2">Kaydet</button>
+    <a asp-action="List" class="btn btn-secondary mt-2">İptal</a>
+</form>

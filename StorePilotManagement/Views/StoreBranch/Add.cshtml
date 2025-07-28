@@ -1,0 +1,418 @@
+﻿@using StorePilotManagement.ViewModels
+@model StoreBranchViewModel
+
+@{
+    ViewData["Title"] = "Mağaza Ekle";
+}
+
+<h2>Yeni Mağaza Ekle</h2>
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<form asp-action="Add" method="post">
+    <div class="row">
+        <div class="col-md-6">
+
+            <div class="form-group mt-2">
+                <label>Firma</label>
+                <select asp-for="StoreId" asp-items="Model.AllStores" class="form-control">
+                    <option value="">-- Seçiniz --</option>
+                </select>
+                <span asp-validation-for="StoreId" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-2">
+                <label>Bölge</label>
+                <select asp-for="RegionId" asp-items="Model.AllRegions" class="form-control">
+                    <option value="">-- Seçiniz --</option>
+                </select>
+                <span asp-validation-for="RegionId" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group mb-2">
+                <label>Mağaza Adı</label>
+                <input asp-for="BranchName" class="form-control" />
+                <span asp-validation-for="BranchName" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Mağaza No</label>
+                <input asp-for="BranchNo" class="form-control" />
+                <span asp-validation-for="BranchNo" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group mt-2">
+                <label>Periyot Türü</label>
+                <select asp-for="PeriodType" class="form-control" id="periodType">
+                    <option value="">Seçiniz</option>
+                    <option value="Weekly">Haftalık</option>
+                    <option value="Monthly">Aylık</option>
+                </select>
+                <span asp-validation-for="PeriodType" class="text-danger"></span>
+            </div>
+
+            <!-- Haftalık Seçenekleri (Başlangıçta gizli) -->
+            <div id="weeklyOptions" style="display: none;">
+                <div class="form-group mt-2">
+                    <label>Her kaç haftada bir</label>
+                    <input asp-for="WeeklyTypeRange" class="form-control" type="number" min="1" />
+                    <span asp-validation-for="WeeklyTypeRange" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-2">
+                    <label>Haftanın Günleri</label>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklyMonday" class="form-check-input" />
+                        <label asp-for="IsWeeklyMonday" class="form-check-label">Pazartesi</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklyTuesday" class="form-check-input" />
+                        <label asp-for="IsWeeklyTuesday" class="form-check-label">Salı</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklyWednesday" class="form-check-input" />
+                        <label asp-for="IsWeeklyWednesday" class="form-check-label">Çarşamba</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklyThursday" class="form-check-input" />
+                        <label asp-for="IsWeeklyThursday" class="form-check-label">Perşembe</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklyFriday" class="form-check-input" />
+                        <label asp-for="IsWeeklyFriday" class="form-check-label">Cuma</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklySaturday" class="form-check-input" />
+                        <label asp-for="IsWeeklySaturday" class="form-check-label">Cumartesi</label>
+                    </div>
+                    <div class="form-check">
+                        <input asp-for="IsWeeklySunday" class="form-check-input" />
+                        <label asp-for="IsWeeklySunday" class="form-check-label">Pazar</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aylık Seçenekleri (Başlangıçta gizli) -->
+            <div id="monthlyOptions" style="display: none;">
+                <div class="form-group mt-2">
+                    <label>Aylık Tip</label>
+                    <select asp-for="MonthlyType" class="form-control" id="monthlyType">
+                        <option value="1">Belirli Gün</option>
+                        <option value="2">Hafta ve Gün</option>
+                    </select>
+                    <span asp-validation-for="MonthlyType" class="text-danger"></span>
+                </div>
+
+                <!-- Tip 1 Seçenekleri -->
+                <div id="monthlyType1Options" style="display: none;">
+                    <div class="form-group mt-2">
+                        <label>Her kaç ayda bir</label>
+                        <input asp-for="MonthlyType1Value" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="MonthlyType1Value" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Ayın kaçıncı günü</label>
+                        <input asp-for="MonthlyType1Day" class="form-control" type="number" min="1" max="31" />
+                        <span asp-validation-for="MonthlyType1Day" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Tip 2 Seçenekleri -->
+                <div id="monthlyType2Options" style="display: none;">
+                    <div class="form-group mt-2">
+                        <label>Her kaç ayda bir</label>
+                        <input asp-for="MonthlyType2Value" class="form-control" type="number" min="1" />
+                        <span asp-validation-for="MonthlyType2Value" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Hafta</label>
+                        <select asp-for="MonthlyType2Range" class="form-control">
+                            <option value="1">1. Hafta</option>
+                            <option value="2">2. Hafta</option>
+                            <option value="3">3. Hafta</option>
+                            <option value="4">4. Hafta</option>
+                            <option value="5">Son Hafta</option>
+                        </select>
+                        <span asp-validation-for="MonthlyType2Range" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-2">
+                        <label>Gün</label>
+                        <select asp-for="MonthlyType2Day" class="form-control">
+                            <option value="1">Pazartesi</option>
+                            <option value="2">Salı</option>
+                            <option value="3">Çarşamba</option>
+                            <option value="4">Perşembe</option>
+                            <option value="5">Cuma</option>
+                            <option value="6">Cumartesi</option>
+                            <option value="7">Pazar</option>
+                        </select>
+                        <span asp-validation-for="MonthlyType2Day" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group mb-2">
+                <label>Şehir</label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>İlçe</label>
+                <input asp-for="District" class="form-control" />
+                <span asp-validation-for="District" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Adres</label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Mahalle</label>
+                <input asp-for="Neighborhood" class="form-control" />
+                <span asp-validation-for="Neighborhood" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Posta Kodu</label>
+                <input asp-for="PostalCode" class="form-control" />
+                <span asp-validation-for="PostalCode" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Telefon</label>
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>E-Posta</label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Beklenen Ziyaret Süresi (Dakika)</label>
+                <input asp-for="ExpectedVisitDuration" class="form-control" type="number" min="1" />
+                <span asp-validation-for="ExpectedVisitDuration" class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <label>Sorumlu Kullanıcı</label>
+                <select asp-for="ResponsibleUserId" asp-items="Model.AllUsers" class="form-control">
+                    <option value="">-- Seçiniz --</option>
+                </select>
+                <span asp-validation-for="ResponsibleUserId" class="text-danger"></span>
+            </div>
+            
+
+            
+
+            <div class="form-group mt-3">
+                <label>Konum Seç (Harita Üzerinden)</label>
+                <div id="map" style="height: 300px; width: 100%;"></div>
+            </div>
+
+            <input type="hidden" asp-for="Latitude" id="Latitude" />
+            <input type="hidden" asp-for="Longitude" id="Longitude" />
+
+            <div class="mt-2">
+                <span class="text-muted">Seçilen Enlem: <span id="lblEnlem">@Model.Latitude</span></span><br />
+                <span class="text-muted">Seçilen Boylam: <span id="lblBoylam">@Model.Longitude</span></span>
+            </div>
+
+
+            <div class="form-check mt-2">
+                <input asp-for="IsPassive" class="form-check-input" />
+                <label asp-for="IsPassive" class="form-check-label">Pasif</label>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <h5>Yetkililer</h5>
+            <div id="yetkili-listesi">
+                @for (int i = 0; i < Model.Contacts.Count; i++)
+                {
+                    <div class="yetkili-item border p-3 mb-3 rounded" data-index="@i">
+                        <input type="hidden" name="Contacts[@i].Uuid" value="@Model.Contacts[i].Uuid" />
+                        <div class="form-group mb-2">
+                            <label>Ad Soyad</label>
+                            <input name="Contacts[@i].FullName" class="form-control" value="@Model.Contacts[i].FullName" required />
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Cep Tel</label>
+                            <input name="Contacts[@i].Phone" class="form-control" value="@Model.Contacts[i].Phone" />
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>E-Posta</label>
+                            <input name="Contacts[@i].Email" class="form-control" value="@Model.Contacts[i].Email" />
+                        </div>
+                        <div class="form-group mb-2">
+                            <label>Rol</label>
+                            <input name="Contacts[@i].Role" class="form-control" value="@Model.Contacts[i].Role" />
+                        </div>
+                        <div class="form-check mb-2">
+                            <input name="Contacts[@i].IsMaster" class="form-check-input" type="checkbox" @(Model.Contacts[i].IsMaster ? "checked" : "") />
+                            <label class="form-check-label">Ana Yetkili</label>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-danger remove-yetkili">Sil</button>
+                    </div>
+                }
+            </div>
+
+            <button type="button" id="addYetkili" class="btn btn-sm btn-secondary">+ Yetkili Ekle</button>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Kaydet</button>
+    <a asp-action="List" class="btn btn-secondary mt-3">İptal</a>
+</form>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script>
+        let yetkiliIndex = @Model.Contacts.Count;
+
+                $('#addYetkili').on('click', function () {
+            const template = `
+                <div class="yetkili-item border p-3 mb-3 rounded" data-index="${yetkiliIndex}">
+                    <div class="form-group mb-2">
+                        <label>Ad Soyad</label>
+                        <input name="Contacts[${yetkiliIndex}].FullName" class="form-control" required />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Cep Tel</label>
+                        <input name="Contacts[${yetkiliIndex}].Phone" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>E-Posta</label>
+                        <input name="Contacts[${yetkiliIndex}].Email" class="form-control" />
+                    </div>
+                    <div class="form-group mb-2">
+                        <label>Rol</label>
+                        <input name="Contacts[${yetkiliIndex}].Role" class="form-control" />
+                    </div>
+                    <div class="form-check mb-2">
+                        <input name="Contacts[${yetkiliIndex}].IsMaster" class="form-check-input" type="checkbox" />
+                        <label class="form-check-label">Ana Yetkili</label>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-danger remove-yetkili">Sil</button>
+                </div>`;
+            $('#yetkili-listesi').append(template);
+            yetkiliIndex++;
+        });
+
+        $(document).on('click', '.remove-yetkili', function () {
+            if ($('.yetkili-item').length > 1) {
+                $(this).closest('.yetkili-item').remove();
+            } else {
+                alert("En az bir yetkili olmalı.");
+            }
+        });
+
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Periyot türü değiştiğinde
+            $('#periodType').change(function() {
+                const selectedValue = $(this).val();
+
+                $('#weeklyOptions, #monthlyOptions').hide();
+
+                if (selectedValue === 'Weekly') {
+                    $('#weeklyOptions').show();
+                } else if (selectedValue === 'Monthly') {
+                    $('#monthlyOptions').show();
+                    // Aylık tipi değişikliğini tetikle
+                    $('#monthlyType').trigger('change');
+                }
+            });
+
+            // Aylık tipi değiştiğinde
+            $('#monthlyType').change(function() {
+                const selectedType = $(this).val();
+
+                $('#monthlyType1Options, #monthlyType2Options').hide();
+
+                if (selectedType === '1') {
+                    $('#monthlyType1Options').show();
+                } else if (selectedType === '2') {
+                    $('#monthlyType2Options').show();
+                }
+            });
+
+            // Sayfa yüklendiğinde mevcut değerlere göre görünürlüğü ayarla
+            const initialPeriodType = $('#periodType').val();
+            if (initialPeriodType === 'Weekly') {
+                $('#weeklyOptions').show();
+            } else if (initialPeriodType === 'Monthly') {
+                $('#monthlyOptions').show();
+                const initialMonthlyType = $('#monthlyType').val();
+                if (initialMonthlyType === '1') {
+                    $('#monthlyType1Options').show();
+                } else if (initialMonthlyType === '2') {
+                    $('#monthlyType2Options').show();
+                }
+            }
+        });
+    </script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script>
+        var map = L.map('map').setView([39.92, 32.85], 6); // Türkiye merkezi
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap katkıda bulunanlar'
+        }).addTo(map);
+
+        var marker;
+
+        function updateMarker(lat, lng) {
+            document.getElementById("Latitude").value = lat.toString().replace('.', ',');
+            document.getElementById("Longitude").value = lng.toString().replace('.', ',');
+
+            document.getElementById("lblEnlem").innerText = lat.toFixed(6);
+            document.getElementById("lblBoylam").innerText = lng.toFixed(6);
+        }
+
+
+        map.on('click', function (e) {
+            var lat = e.latlng.lat;
+            var lng = e.latlng.lng;
+
+            if (marker) {
+                marker.setLatLng([lat, lng]);
+            } else {
+                marker = L.marker([lat, lng]).addTo(map);
+            }
+
+            updateMarker(lat, lng);
+        });
+
+        // Eğer modelde koordinatlar varsa başlangıç konumu olarak göster
+        var initialLat = parseFloat('@Model.Latitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture)');
+        var initialLng = parseFloat('@Model.Longitude.ToString("F6", System.Globalization.CultureInfo.InvariantCulture)');
+
+        if (!isNaN(initialLat) && !isNaN(initialLng) && initialLat !== 0 && initialLng !== 0) {
+            marker = L.marker([initialLat, initialLng]).addTo(map);
+            map.setView([initialLat, initialLng], 14);
+            updateMarker(initialLat, initialLng);
+        }
+    </script>
+}

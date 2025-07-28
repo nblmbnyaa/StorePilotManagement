@@ -1,0 +1,64 @@
+﻿@using StorePilotManagement.ViewModels
+@model List<UserListViewModel>
+
+    @if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}
+
+<h2>Kullanıcı Listesi</h2>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Kod</th>
+            <th>İsim</th>
+            <th>Durum</th>
+            <th>İşlemler</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.UserName</td>
+                <td>@item.FullName</td>
+                <td>@(item.IsPassive ? "Pasif" : "Aktif")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-Uuid="@item.Uuid" class="btn btn-sm btn-warning me-2">Düzenle</a>
+
+                    <form asp-action="ChangeState" asp-route-Uuid="@item.Uuid" method="post" style="display:inline">
+                        <button type="submit" class="btn btn-sm @(item.IsPassive ? "btn-success" : "btn-secondary")">
+                            @(item.IsPassive ? "Aktif Yap" : "Pasif Yap")
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a class="btn btn-primary" asp-action="Add">Yeni Kullanıcı Ekle</a>

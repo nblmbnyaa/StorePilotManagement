@@ -65,9 +65,10 @@
                     <div id="collapseGenel" class="accordion-collapse collapse" aria-labelledby="headingGenel" data-bs-parent="#menuAccordion">
                         <div class="accordion-body p-0">
                             <ul class="nav flex-column">
-                                <li class="nav-item"><a class="nav-link" asp-controller="Kullanici" asp-action="Liste">Kullanıcılar</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="User" asp-action="List">Kullanıcılar</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="Rol" asp-action="Liste">Roller</a></li>
-                                <li class="nav-item"><a class="nav-link" asp-controller="Bolge" asp-action="Liste">Bölgeler</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Region" asp-action="List">Bölgeler</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="Store" asp-action="List">Firmalar</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="DolapTuru" asp-action="Liste">Dolap Türleri</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="StantTuru" asp-action="Liste">Stant Türleri</a></li>
                                 <li class="nav-item"><a class="nav-link" asp-controller="MagazaKategori" asp-action="Liste">Mağaza Kategorileri</a></li>
@@ -86,7 +87,7 @@
                     <div id="collapseMagaza" class="accordion-collapse collapse" aria-labelledby="headingMagaza" data-bs-parent="#menuAccordion">
                         <div class="accordion-body p-0">
                             <ul class="nav flex-column">
-                                <li class="nav-item"><a class="nav-link" asp-controller="Magaza" asp-action="Liste">Mağaza Tanımları</a></li>
+                                <li class="nav-item"><a class="nav-link" asp-controller="StoreBranch" asp-action="List">Mağaza Tanımları</a></li>
                                 @* <li class="nav-item"><a class="nav-link" asp-controller="StantIslem" asp-action="Liste">Stant İşlemleri</a></li> *@
                             </ul>
                         </div>

@@ -7,7 +7,7 @@ namespace StorePilotManagement.Controllers.Web
     {
         public override void OnActionExecuting(ActionExecutingContext context)
         {
-            var oturum = context.HttpContext.Session.GetString("KullaniciAdi");
+            var oturum = context.HttpContext.Session.GetString("Session");
 
             // Giriş yapılmamışsa Login'e yönlendir
             if (string.IsNullOrEmpty(oturum) &&

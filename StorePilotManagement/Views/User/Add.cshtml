@@ -1,0 +1,67 @@
+﻿@using StorePilotManagement.ViewModels
+@model UserViewModel
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@section Scripts {
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}
+
+<h2>Kullanıcı Ekle</h2>
+
+<form asp-action="Add" method="post">
+    <div class="form-group">
+        <label>Kod</label>
+        <input asp-for="UserName" class="form-control" />
+        <span asp-validation-for="UserName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>İsim</label>
+        <input asp-for="FullName" class="form-control" />
+        <span asp-validation-for="FullName" class="text-danger"></span>
+    </div>
+
+
+    <div class="form-group">
+        <label>Şifre</label>
+        <input asp-for="Password" type="password" class="form-control" />
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Kullanıcı Tipi</label>
+        <select asp-for="UserType" asp-items="Model.AllTypes" class="form-control"></select>
+        <span asp-validation-for="UserType" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label>Roller</label>
+        <select asp-for="SelectedRoles" asp-items="Model.AllRoles" multiple class="form-control"></select>
+        <span asp-validation-for="SelectedRoles" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">Kaydet</button>
+</form>
