@@ -48,7 +48,7 @@ namespace StorePilotTables.Tables
             }
             else
             {
-                if (tokenExpiry > DateTime.Now)
+                if (tokenExpiry < DateTime.Now)
                 {
                     hatamesaji = "Oturum süresi dolmuş. Lütfen tekrar giriş yapın.";
                     return false;

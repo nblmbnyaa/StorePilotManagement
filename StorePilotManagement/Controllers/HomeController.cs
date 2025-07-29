@@ -31,20 +31,12 @@ public class HomeController : BaseController
             conn.Open();
             var km = conn.CreateCommand();
 
-            new Region(km);
-            new DOLAP_TURLERI(km);
-            new GOREV_TANIMLARI(km);
-            new MAGAZA_KATEGORILERI(km);
-            new StoreBranch(km);
-            new PROJELER(km);
-            new ROLLER(km);
-            new STANT_TURLERI(km);
+
             new BranchContact(km);
-            new ZIYARET_PLAN_DETAYLARI(km);
-            new ZIYARET_PLANLARI(km);
-
-
+            new Region(km);
             new Session(km);
+            new Store(km);
+            new StoreBranch(km);
             (new TaskTable(null)).CreateTable(km, "Task");
             new User(km);
             new UserRole(km);

@@ -83,7 +83,7 @@ where KullaniciUuid=@KullaniciUuid and Tarih=@Tarih";
                             konumBoylam = dr["konumBoylam"].getdeci(),
                             ziyaretBaslangicTarihi = dr["ziyaretBaslangicTarihi"].getdate(),
                             ziyaretBitisTarihi = dr["ziyaretBitisTarihi"].getdate(),
-                            ziyaretDurumu = Yardimci.GetDescription((ZIYARET_PLANLARI.ZiyaretDurumu)dr["ziyaretDurumu"].Tamsayi()),
+                            ziyaretDurumu = Yardimci.GetDescription((zzzZIYARET_PLANLARI.ZiyaretDurumu)dr["ziyaretDurumu"].Tamsayi()),
                             adresNotu = dr["adresNotu"].ToString(),
                             gorevler = new List<GorevModel>() // İsteğe bağlı, ziyaretle ilişkili görevler
                         };

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace StorePilotTables.Tables
 {
-    public class ZIYARET_PLANLARI : TABLO
+    public class zzzZIYARET_PLANLARI : TABLO
     {
-        public ZIYARET_PLANLARI(SqlCommand km) : base(km)
+        public zzzZIYARET_PLANLARI(SqlCommand km) : base(km)
         {
             IndexCreate(km, new TabloIndex
             {

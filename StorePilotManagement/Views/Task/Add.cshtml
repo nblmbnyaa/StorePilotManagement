@@ -1,0 +1,101 @@
+﻿@model StorePilotManagement.ViewModels.TaskViewModel
+
+@{
+    ViewData["Title"] = "Yeni Görev Ekle";
+}
+
+@if (TempData["BasariMesaji"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["BasariMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        @TempData["HataMesaji"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<h2>Yeni Görev Ekle</h2>
+
+<form asp-action="Add" method="post">
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label">Adı</label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Detay</label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Tags" class="form-label">Etiketler</label>
+        <input asp-for="Tags" class="form-control" />
+        <small class="form-text text-muted">Etiketleri "," ile ayırınız (örnek: Etiket1,Etiket2,Etiket3)</small>
+        <span asp-validation-for="Tags" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="RequiredPhotoCount" class="form-label">Zorunlu Fotoğraf Sayısı</label>
+        <input asp-for="RequiredPhotoCount" class="form-control" type="number" min="0" />
+        <span asp-validation-for="RequiredPhotoCount" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Options" class="form-label">Seçenekler</label>
+        <input asp-for="Options" class="form-control" />
+        <small class="form-text text-muted">Seçenekleri "|" ile ayırınız (örnek: Seçenek1|Seçenek2|Seçenek3)</small>
+        <span asp-validation-for="Options" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IdealOption" class="form-label">İdeal Seçenek</label>
+        <input asp-for="IdealOption" class="form-control" />
+        <span asp-validation-for="IdealOption" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="StartDate" class="form-label">Başlangıç Tarihi</label>
+        <input asp-for="StartDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="StartDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="EndDate" class="form-label">Bitiş Tarihi</label>
+        <input asp-for="EndDate" class="form-control" type="datetime-local" />
+        <span asp-validation-for="EndDate" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="PhotoAiPrompt" class="form-label">Fotoğraflar İçin Yapay Zeka Yönergesi</label>
+        <textarea asp-for="PhotoAiPrompt" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="PhotoAiPrompt" class="text-danger"></span>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsRequired" class="form-check-input" />
+        <label asp-for="IsRequired" class="form-check-label">Zorunlu mu</label>
+    </div>
+    <div class="form-check mb-3">
+        <input asp-for="IsPassive" class="form-check-input" />
+        <label asp-for="IsPassive" class="form-check-label">Pasif mi</label>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Kaydet</button>
+    <a asp-action="List" class="btn btn-secondary">İptal</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        setTimeout(function () {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+                bsAlert.close();
+            });
+        }, 4000);
+    </script>
+}

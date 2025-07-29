@@ -22,8 +22,8 @@ namespace StorePilotManagement.Controllers.Api
             _configuration = configuration;
         }
 
-        [HttpPost("GirisYap")]
-        public ActionResult<Session> GirisYap([FromBody] LoginModel input)
+        [HttpPost("Login")]
+        public ActionResult<Session> Login([FromBody] LoginModel input)
         {
             try
             {

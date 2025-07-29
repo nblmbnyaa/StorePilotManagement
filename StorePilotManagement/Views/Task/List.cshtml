@@ -1,4 +1,4 @@
-﻿@model List<StorePilotManagement.ViewModels.GorevTanimViewModel>
+﻿@model List<StorePilotManagement.ViewModels.TaskViewModel>
 
 @{
     ViewData["Title"] = "Görev Tanımları";
@@ -29,10 +29,6 @@
         <tr>
             <th>Görev Adı</th>
             <th>Detay</th>
-            <th>Zorunlu Fotoğraf</th>
-            <th>Ortalama Süre (sn)</th>
-            <th>Azami Süre (sn)</th>
-            <th>Puan</th>
             <th>Pasif</th>
             <th>İşlemler</th>
         </tr>
@@ -41,20 +37,16 @@
         @foreach (var item in Model)
         {
             <tr>
-                <td>@item.Adi</td>
-                <td>@(item.Detay?.Length > 30 ? item.Detay.Substring(0, 30) + "..." : item.Detay)</td>
-                <td>@item.ZorunluFotografSayisi</td>
-                <td>@item.OrtalamaSureSn</td>
-                <td>@item.AzamiSureSn</td>
-                <td>@item.Puan</td>
-                <td>@(item.PasifMi ? "Evet" : "Hayır")</td>
+                <td>@item.Title</td>
+                <td>@(item.Description?.Length > 30 ? item.Description.Substring(0, 30) + "..." : item.Description)</td>
+                <td>@(item.IsPassive ? "Evet" : "Hayır")</td>
                 <td>
-                    <a asp-action="Duzenle" asp-route-uuid="@item.Uuid" class="btn btn-sm btn-warning me-1">Düzenle</a>
+                    <a asp-action="Edit" asp-route-uuid="@item.Uuid" class="btn btn-sm btn-warning me-1">Düzenle</a>
 
-                    <form asp-action="DegistirDurum" method="post" style="display:inline">
+                    <form asp-action="ChangeState" method="post" style="display:inline">
                         <input type="hidden" name="Uuid" value="@item.Uuid" />
-                        <button type="submit" class="btn btn-sm @(item.PasifMi ? "btn-success" : "btn-danger")">
-                            @(item.PasifMi ? "Aktif Yap" : "Pasif Yap")
+                        <button type="submit" class="btn btn-sm @(item.IsPassive ? "btn-success" : "btn-danger")">
+                            @(item.IsPassive ? "Aktif Yap" : "Pasif Yap")
                         </button>
                     </form>
                 </td>
@@ -64,7 +56,7 @@
 </table>
 
 <p>
-    <a asp-action="Ekle" class="btn btn-primary">Yeni Görev Ekle</a>
+    <a asp-action="Add" class="btn btn-primary">Yeni Görev Ekle</a>
 </p>
 
 @section Scripts {

@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace StorePilotTables.Tables
 {
-    public class PROJELER : TABLO
+    public class zzzZIYARET_PLAN_DETAYLARI : TABLO
     {
-        public PROJELER(SqlCommand km) : base(km)
+        public zzzZIYARET_PLAN_DETAYLARI(SqlCommand km) : base(km)
         {
         }
 
@@ -20,11 +20,10 @@ namespace StorePilotTables.Tables
         [Description("uniqueidentifier")] public Guid OlusturanUuid { get; set; }
         [Description("datetime")] public DateTime SonDegisiklikZamani { get; set; }
         [Description("uniqueidentifier")] public Guid SonDegistirenUuid { get; set; }
-        [Description("nvarchar-150")] public string Adi { get; set; }
-        [Description("nvarchar-MAX")] public string Detay { get; set; }
-        [Description("datetime")] public DateTime BaslangicTarihi { get; set; }
-        [Description("datetime")] public DateTime BitisTarihi { get; set; }
-        [Description("bit")] public bool PasifMi { get; set; }
+        [Description("uniqueidentifier")] public Guid ZiyaretPlaniUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid GorevUuid { get; set; }
+        [Description("nvarchar-MAX")] public string Aciklama { get; set; }
+        [Description("float")] public decimal Puan { get; set; }
 
     }
 }

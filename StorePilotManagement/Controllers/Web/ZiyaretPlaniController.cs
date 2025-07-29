@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using static StorePilotTables.Tables.ZIYARET_PLANLARI;
+using static StorePilotTables.Tables.zzzZIYARET_PLANLARI;
 using StorePilotManagement.ViewModels;
 using StorePilotTables.Utilities;
 using StorePilotManagement.Helper;
@@ -135,7 +135,7 @@ WHERE 1=1";
             conn.Open();
             var km = conn.CreateCommand();
 
-            var ziyaret = new ZIYARET_PLANLARI(null)
+            var ziyaret = new zzzZIYARET_PLANLARI(null)
             {
                 Uuid = Guid.NewGuid(),
                 MagazaUuid = model.MagazaUuid,
@@ -163,7 +163,7 @@ WHERE 1=1";
 
             foreach (var detay in model.Detaylar)
             {
-                var pd = new ZIYARET_PLAN_DETAYLARI(null)
+                var pd = new zzzZIYARET_PLAN_DETAYLARI(null)
                 {
                     Uuid = Guid.NewGuid(),
                     ZiyaretPlaniUuid = ziyaret.Uuid,
@@ -205,7 +205,7 @@ WHERE 1=1";
                 conn.Open();
                 var km = conn.CreateCommand();
 
-                ZIYARET_PLANLARI ziyaretPlanlari = new ZIYARET_PLANLARI(null);
+                zzzZIYARET_PLANLARI ziyaretPlanlari = new zzzZIYARET_PLANLARI(null);
                 ziyaretPlanlari.Temizle();
                 km.CommandText = "select * from ZIYARET_PLANLARI with(nolock) where Uuid=@Uuid";
                 km.Parameters.Clear();
@@ -292,7 +292,7 @@ WHERE 1=1";
                 km.CommandText = "SELECT * FROM ZIYARET_PLANLARI with(nolock) WHERE Uuid = @Uuid";
                 km.Parameters.Clear();
                 km.Parameters.AddWithValue("@Uuid", model.Uuid);
-                ZIYARET_PLANLARI ziyaretPlanlari = new ZIYARET_PLANLARI(null);
+                zzzZIYARET_PLANLARI ziyaretPlanlari = new zzzZIYARET_PLANLARI(null);
                 if (!ziyaretPlanlari.ReadData(km))
                 {
                     TempData["HataMesaji"] = "Ziyaret planı bulunamadı.";
@@ -324,7 +324,7 @@ WHERE 1=1";
 
                 foreach (var detay in model.Detaylar)
                 {
-                    ZIYARET_PLAN_DETAYLARI ziyaretPlaniDetaylari = new ZIYARET_PLAN_DETAYLARI(null);
+                    zzzZIYARET_PLAN_DETAYLARI ziyaretPlaniDetaylari = new zzzZIYARET_PLAN_DETAYLARI(null);
                     km.CommandText = "SELECT * FROM ZIYARET_PLAN_DETAYLARI with(nolock) WHERE Uuid = @Uuid";
                     km.Parameters.Clear();
                     km.Parameters.AddWithValue("@Uuid", detay.Uuid.getguid());
