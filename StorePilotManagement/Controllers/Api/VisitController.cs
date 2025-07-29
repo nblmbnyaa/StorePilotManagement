@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using StorePilotManagement.Models.Api;
 using StorePilotTables.Tables;
+using StorePilotTables.Utilities;
 using System.Data;
 
 namespace StorePilotManagement.Controllers.Api
