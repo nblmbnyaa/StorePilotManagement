@@ -50,44 +50,8 @@ namespace StorePilotManagement.Controllers.Api
                         visit.id = visit.Insert(km);
                     }
 
-                    km.CommandText = @"select * from Store with(nolock) where id in (select storeId from StoreBranch with(nolock) where responsibleUserId=@userId)";
-                    km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@userId", session.userId);
-                    DataTable dt = new DataTable();
-                    using (SqlDataAdapter da = new SqlDataAdapter(km))
-                    {
-                        da.Fill(dt);
-                    }
-                    if (dt.Rows.Count == 0)
-                    {
-                        return Ok(new List<Store>());
-                    }
-
-                    List<Store> storeList = new List<Store>();
-
-                    foreach (DataRow dr in dt.Rows)
-                    {
-                        Store store = new Store(km)
-                        {
-                            id = dr[nameof(StorePilotTables.Tables.Store.id)].Tamsayi(),
-                            uuid = dr[nameof(StorePilotTables.Tables.Store.uuid)].getguid(),
-                            name = dr[nameof(StorePilotTables.Tables.Store.name)].getstring(),
-                            legalName = dr[nameof(StorePilotTables.Tables.Store.legalName)].getstring(),
-                            taxNumber = dr[nameof(StorePilotTables.Tables.Store.taxNumber)].getstring(),
-                            responsibleName = dr[nameof(StorePilotTables.Tables.Store.responsibleName)].getstring(),
-                            phone = dr[nameof(StorePilotTables.Tables.Store.phone)].getstring(),
-                            email = dr[nameof(StorePilotTables.Tables.Store.email)].getstring(),
-                            isActive = dr[nameof(StorePilotTables.Tables.Store.isActive)].getbool(),
-                            isDeleted = dr[nameof(StorePilotTables.Tables.Store.isDeleted)].getbool(),
-                            isSynced = dr[nameof(StorePilotTables.Tables.Store.isSynced)].getbool(),
-                            createdById = dr[nameof(StorePilotTables.Tables.Store.createdById)].Tamsayi(),
-                            createdAt = dr[nameof(StorePilotTables.Tables.Store.createdAt)].getdate(),
-                            updatedAt = dr[nameof(StorePilotTables.Tables.Store.updatedAt)].getdate()
-                        };
-
-                        storeList.Add(store);
-                    }
-                    return Ok(storeList);
+                    transaction.Commit();
+                    return Ok(true);
                 }
             }
             catch (Exception ex)
