@@ -23,14 +23,14 @@ namespace StorePilotTables.Tables
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { nameof(storeId) },
+                IndexColumns = new List<string> { nameof(storeUuid) },
                 IsUnique = false,
                 IsClustered = false,
                 Name = "IX_#TABLO#_02",
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { nameof(regionId) },
+                IndexColumns = new List<string> { nameof(regionUuid) },
                 IsUnique = false,
                 IsClustered = false,
                 Name = "IX_#TABLO#_03",
@@ -39,8 +39,8 @@ namespace StorePilotTables.Tables
 
         [Description("int*")] public int id { get; set; }
         [Description("uniqueidentifier")] public Guid uuid { get; set; }
-        [Description("int")] public int storeId { get; set; }
-        [Description("int")] public int regionId { get; set; }
+        [Description("uniqueidentifier")] public Guid storeUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid regionUuid { get; set; }
         [Description("nvarchar-150")] public string branchName { get; set; }
         [Description("nvarchar-50")] public string branchNo { get; set; }
         [Description("nvarchar-255")] public string address { get; set; }
@@ -53,7 +53,7 @@ namespace StorePilotTables.Tables
         [Description("nvarchar-20")] public string phone { get; set; }
         [Description("nvarchar-100")] public string email { get; set; }
         [Description("int")] public int expectedVisitDuration { get; set; }
-        [Description("int")] public int responsibleUserId { get; set; }
+        [Description("uniqueidentifier")] public Guid responsibleUserUuid { get; set; }
         [Description("bit")] public bool isHeadOffice { get; set; }
         [Description("bit")] public bool isFranchise { get; set; }
         [Description("datetime")] public DateTime openDate { get; set; }
@@ -61,7 +61,7 @@ namespace StorePilotTables.Tables
         [Description("bit")] public bool isActive { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
         [Description("bit")] public bool isSynced { get; set; }
-        [Description("int")] public int createdById { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
 

@@ -97,7 +97,7 @@ namespace StorePilotManagement.Controllers.Web
                 taskTable.isActive = !model.IsPassive;
                 taskTable.isRequired = model.IsRequired;
                 taskTable.createdAt = DateTime.Now;
-                taskTable.createdById = session.userId;
+                taskTable.createdByUuid = session.userUuid;
                 taskTable.updatedAt = taskTable.createdAt;
                 taskTable.id = taskTable.Insert(km, "Task");
                 if (taskTable.id <= 0)

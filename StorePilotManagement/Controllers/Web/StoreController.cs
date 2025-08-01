@@ -85,7 +85,7 @@ namespace StorePilotManagement.Controllers.Web
                 store.isActive = !model.IsPassive;
                 store.updatedAt = DateTime.Now;
                 store.createdAt = store.updatedAt;
-                store.createdById = session.userId;
+                store.createdByUuid = session.userUuid;
                 store.uuid = Guid.NewGuid();
                 store.id = store.Insert(km);
                 if (store.id <= 0)

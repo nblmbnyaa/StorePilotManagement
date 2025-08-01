@@ -27,10 +27,10 @@ namespace StorePilotTables.Tables
         [Description("nvarchar-50")] public string code { get; set; }
         [Description("nvarchar-255")] public string description { get; set; }
         [Description("bit")] public bool isActive { get; set; }
-        [Description("int")] public int responsibleUserId { get; set; }
+        [Description("uniqueidentifier")] public Guid responsibleUserUuid { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
         [Description("bit")] public bool isSynced { get; set; }
-        [Description("int")] public int createdById { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
 

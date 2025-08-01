@@ -22,7 +22,7 @@ namespace StorePilotTables.Tables
             });
             IndexCreate(km, new TabloIndex
             {
-                IndexColumns = new List<string> { nameof(storeBranchId) },
+                IndexColumns = new List<string> { nameof(storeBranchUuid) },
                 IsUnique = false,
                 IsClustered = false,
                 Name = "IX_#TABLO#_02",
@@ -31,7 +31,7 @@ namespace StorePilotTables.Tables
 
         [Description("int*")] public int id { get; set; }
         [Description("uniqueidentifier")] public Guid uuid { get; set; }
-        [Description("int")] public int storeBranchId { get; set; }
+        [Description("uniqueidentifier")] public Guid storeBranchUuid { get; set; }
         [Description("nvarchar-100")] public string fullName { get; set; }
         [Description("nvarchar-30")] public string phone { get; set; }
         [Description("nvarchar-100")] public string email { get; set; }
@@ -41,7 +41,7 @@ namespace StorePilotTables.Tables
         [Description("datetime")] public DateTime endDate { get; set; }
         [Description("bit")] public bool isActive { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
-        [Description("int")] public int createdById { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
 

@@ -17,7 +17,7 @@ namespace StorePilotTables.Tables
         [Description("int*")] public int id { get; set; }
         [Description("uniqueidentifier")] public Guid uuid { get; set; }
         [Description("nvarchar-100")] public string sessionId { get; set; }
-        [Description("int")] public int userId { get; set; }
+        [Description("uniqueidentifier")] public Guid userUuid { get; set; }
         [Description("nvarchar-50")] public string userName { get; set; }
         [Description("nvarchar-100")] public string fullName { get; set; }
         [Description("nvarchar-255")] public string token { get; set; }

@@ -138,7 +138,7 @@ namespace StorePilotManagement.Controllers.Web
                 user.deviceId = model.DeviceId.getstring();
                 user.uuid = Guid.NewGuid();
                 user.createdAt = DateTime.Now;
-                user.createdBy = session.userId;
+                user.createdByUuid = session.userUuid;
                 user.id = user.Insert(km);
                 if (user.id <= 0)
                 {

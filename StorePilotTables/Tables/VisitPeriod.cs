@@ -16,10 +16,10 @@ namespace StorePilotTables.Tables
 
         [Description("int*")] public int id { get; set; }
         [Description("uniqueidentifier")] public Guid uuid { get; set; }
-        [Description("int")] public int storeBranchId { get; set; }
+        [Description("uniqueidentifier")] public Guid storeBranchUuid { get; set; }
         [Description("nvarchar-250")] public string periodPattern { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
-        [Description("int")] public int createdById { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
         [Description("nvarchar-50")] public string periodType { get; set; }

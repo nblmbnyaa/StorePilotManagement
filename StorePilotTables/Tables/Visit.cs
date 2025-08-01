@@ -17,8 +17,8 @@ namespace StorePilotTables.Tables
 
         [Description("int*")] public int id { get; set; }
         [Description("uniqueidentifier")] public Guid uuid { get; set; }
-        [Description("int")] public int storeBranchId { get; set; }
-        [Description("int")] public int userId { get; set; }
+        [Description("uniqueidentifier")] public Guid storeBranchUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid userUuid { get; set; }
         [Description("nvarchar-30")] public string status { get; set; }
         [Description("datetime")] public DateTime visitDate { get; set; }
         [Description("datetime")] public DateTime visitStart { get; set; }
@@ -26,7 +26,7 @@ namespace StorePilotTables.Tables
         [Description("int")] public int actualDuration { get; set; }
         [Description("nvarchar-255")] public string notes { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
-        [Description("int")] public int createdById { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
 

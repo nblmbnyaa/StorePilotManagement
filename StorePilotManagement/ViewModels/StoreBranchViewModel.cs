@@ -5,8 +5,8 @@ namespace StorePilotManagement.ViewModels
     public class StoreBranchViewModel
     {
         public Guid? Uuid { get; set; }
-        public int StoreId { get; set; }
-        public int RegionId { get; set; }
+        public Guid StoreUuid { get; set; }
+        public Guid RegionUuid { get; set; }
         public string BranchName { get; set; }
         public string BranchNo { get; set; }
         public string Address { get; set; }
@@ -19,7 +19,7 @@ namespace StorePilotManagement.ViewModels
         public string? Phone { get; set; }
         public string? Email { get; set; }
         public int ExpectedVisitDuration { get; set; }
-        public int ResponsibleUserId { get; set; }
+        public Guid ResponsibleUserUuid { get; set; }
         public bool IsPassive { get; set; }
 
 

@@ -42,9 +42,9 @@ namespace StorePilotManagement.Controllers.Api
                     }
 
 
-                    km.CommandText = @"select * from Store with(nolock) where id in (select storeId from StoreBranch with(nolock) where responsibleUserId=@userId)";
+                    km.CommandText = @"select * from Store with(nolock) where id in (select storeUuid from StoreBranch with(nolock) where responsibleUserUuid=@userUuid)";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@userId", session.userId);
+                    km.Parameters.AddWithValue("@userUuid", session.userUuid);
                     DataTable dt = new DataTable();
                     using (SqlDataAdapter da = new SqlDataAdapter(km))
                     {
@@ -72,7 +72,7 @@ namespace StorePilotManagement.Controllers.Api
                             isActive = dr[nameof(StorePilotTables.Tables.Store.isActive)].getbool(),
                             isDeleted = dr[nameof(StorePilotTables.Tables.Store.isDeleted)].getbool(),
                             isSynced = dr[nameof(StorePilotTables.Tables.Store.isSynced)].getbool(),
-                            createdById = dr[nameof(StorePilotTables.Tables.Store.createdById)].Tamsayi(),
+                            createdByUuid = dr[nameof(StorePilotTables.Tables.Store.createdByUuid)].getguid(),
                             createdAt = dr[nameof(StorePilotTables.Tables.Store.createdAt)].getdate(),
                             updatedAt = dr[nameof(StorePilotTables.Tables.Store.updatedAt)].getdate()
                         };
@@ -111,9 +111,9 @@ namespace StorePilotManagement.Controllers.Api
                     }
 
 
-                    km.CommandText = @"select * from StoreBranch with(nolock) where responsibleUserId=@userId";
+                    km.CommandText = @"select * from StoreBranch with(nolock) where responsibleUserUuid=@userUuid";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@userId", session.userId);
+                    km.Parameters.AddWithValue("@userUuid", session.userUuid);
                     DataTable dt = new DataTable();
                     using (SqlDataAdapter da = new SqlDataAdapter(km))
                     {
@@ -121,7 +121,7 @@ namespace StorePilotManagement.Controllers.Api
                     }
                     if (dt.Rows.Count == 0)
                     {
-                        return Ok(new List<Store>());
+                        return Ok(new List<StoreBranch>());
                     }
 
                     List<StoreBranch> storeBranchList = new List<StoreBranch>();
@@ -132,8 +132,8 @@ namespace StorePilotManagement.Controllers.Api
                         {
                             id = dr[nameof(StorePilotTables.Tables.StoreBranch.id)].Tamsayi(),
                             uuid = dr[nameof(StorePilotTables.Tables.StoreBranch.uuid)].getguid(),
-                            storeId = dr[nameof(StorePilotTables.Tables.StoreBranch.storeId)].Tamsayi(),
-                            regionId = dr[nameof(StorePilotTables.Tables.StoreBranch.regionId)].Tamsayi(),
+                            storeUuid = dr[nameof(StorePilotTables.Tables.StoreBranch.storeUuid)].getguid(),
+                            regionUuid = dr[nameof(StorePilotTables.Tables.StoreBranch.regionUuid)].getguid(),
                             branchName = dr[nameof(StorePilotTables.Tables.StoreBranch.branchName)].getstring(),
                             branchNo = dr[nameof(StorePilotTables.Tables.StoreBranch.branchNo)].getstring(),
                             address = dr[nameof(StorePilotTables.Tables.StoreBranch.address)].getstring(),
@@ -146,7 +146,7 @@ namespace StorePilotManagement.Controllers.Api
                             phone = dr[nameof(StorePilotTables.Tables.StoreBranch.phone)].getstring(),
                             email = dr[nameof(StorePilotTables.Tables.StoreBranch.email)].getstring(),
                             expectedVisitDuration = dr[nameof(StorePilotTables.Tables.StoreBranch.expectedVisitDuration)].Tamsayi(),
-                            responsibleUserId = dr[nameof(StorePilotTables.Tables.StoreBranch.responsibleUserId)].Tamsayi(),
+                            responsibleUserUuid = dr[nameof(StorePilotTables.Tables.StoreBranch.responsibleUserUuid)].getguid(),
                             isHeadOffice = dr[nameof(StorePilotTables.Tables.StoreBranch.isHeadOffice)].getbool(),
                             isFranchise = dr[nameof(StorePilotTables.Tables.StoreBranch.isFranchise)].getbool(),
                             openDate = dr[nameof(StorePilotTables.Tables.StoreBranch.openDate)].getdate(),
@@ -154,7 +154,7 @@ namespace StorePilotManagement.Controllers.Api
                             isActive = dr[nameof(StorePilotTables.Tables.StoreBranch.isActive)].getbool(),
                             isDeleted = dr[nameof(StorePilotTables.Tables.StoreBranch.isDeleted)].getbool(),
                             isSynced = dr[nameof(StorePilotTables.Tables.StoreBranch.isSynced)].getbool(),
-                            createdById = dr[nameof(StorePilotTables.Tables.StoreBranch.createdById)].Tamsayi(),
+                            createdByUuid = dr[nameof(StorePilotTables.Tables.StoreBranch.createdByUuid)].getguid(),
                             createdAt = dr[nameof(StorePilotTables.Tables.StoreBranch.createdAt)].getdate(),
                             updatedAt = dr[nameof(StorePilotTables.Tables.StoreBranch.updatedAt)].getdate()
                         };
@@ -193,9 +193,9 @@ namespace StorePilotManagement.Controllers.Api
                     }
 
 
-                    km.CommandText = @"select * from BranchContact with(nolock) where storeBranchId in (select id from StoreBranch with(nolock) where responsibleUserId=@userId)";
+                    km.CommandText = @"select * from BranchContact with(nolock) where storeBranchUuid in (select uuid from StoreBranch with(nolock) where responsibleUserUuid=@userUuid)";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@userId", session.userId);
+                    km.Parameters.AddWithValue("@userUuid", session.userUuid);
                     DataTable dt = new DataTable();
                     using (SqlDataAdapter da = new SqlDataAdapter(km))
                     {
@@ -214,7 +214,7 @@ namespace StorePilotManagement.Controllers.Api
                         {
                             id = dr[nameof(StorePilotTables.Tables.BranchContact.id)].Tamsayi(),
                             uuid = dr[nameof(StorePilotTables.Tables.BranchContact.uuid)].getguid(),
-                            storeBranchId = dr[nameof(StorePilotTables.Tables.BranchContact.storeBranchId)].Tamsayi(),
+                            storeBranchUuid = dr[nameof(StorePilotTables.Tables.BranchContact.storeBranchUuid)].getguid(),
                             fullName = dr[nameof(StorePilotTables.Tables.BranchContact.fullName)].getstring(),
                             phone = dr[nameof(StorePilotTables.Tables.BranchContact.phone)].getstring(),
                             email = dr[nameof(StorePilotTables.Tables.BranchContact.email)].getstring(),
@@ -224,7 +224,7 @@ namespace StorePilotManagement.Controllers.Api
                             endDate = dr[nameof(StorePilotTables.Tables.BranchContact.endDate)].getdate(),
                             isActive = dr[nameof(StorePilotTables.Tables.BranchContact.isActive)].getbool(),
                             isDeleted = dr[nameof(StorePilotTables.Tables.BranchContact.isDeleted)].getbool(),
-                            createdById = dr[nameof(StorePilotTables.Tables.BranchContact.createdById)].Tamsayi(),
+                            createdByUuid = dr[nameof(StorePilotTables.Tables.BranchContact.createdByUuid)].getguid(),
                             createdAt = dr[nameof(StorePilotTables.Tables.BranchContact.createdAt)].getdate(),
                             updatedAt = dr[nameof(StorePilotTables.Tables.BranchContact.updatedAt)].getdate()
                         };
@@ -263,9 +263,9 @@ namespace StorePilotManagement.Controllers.Api
                     }
 
 
-                    km.CommandText = @"select * from VisitPeriod with(nolock) where storeBranchId in (select id from StoreBranch with(nolock) where responsibleUserId=@userId)";
+                    km.CommandText = @"select * from VisitPeriod with(nolock) where storeBranchUuid in (select uuid from StoreBranch with(nolock) where responsibleUserUuid=@userUuid)";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@userId", session.userId);
+                    km.Parameters.AddWithValue("@userUuid", session.userUuid);
                     DataTable dt = new DataTable();
                     using (SqlDataAdapter da = new SqlDataAdapter(km))
                     {
@@ -284,10 +284,10 @@ namespace StorePilotManagement.Controllers.Api
                         {
                             id = dr[nameof(StorePilotTables.Tables.VisitPeriod.id)].Tamsayi(),
                             uuid = dr[nameof(StorePilotTables.Tables.VisitPeriod.uuid)].getguid(),
-                            storeBranchId = dr[nameof(StorePilotTables.Tables.VisitPeriod.storeBranchId)].Tamsayi(),
+                            storeBranchUuid = dr[nameof(StorePilotTables.Tables.VisitPeriod.storeBranchUuid)].getguid(),
                             periodPattern = dr[nameof(StorePilotTables.Tables.VisitPeriod.periodPattern)].getstring(),
                             isDeleted = dr[nameof(StorePilotTables.Tables.VisitPeriod.isDeleted)].getbool(),
-                            createdById = dr[nameof(StorePilotTables.Tables.VisitPeriod.createdById)].Tamsayi(),
+                            createdByUuid = dr[nameof(StorePilotTables.Tables.VisitPeriod.createdByUuid)].getguid(),
                             createdAt = dr[nameof(StorePilotTables.Tables.VisitPeriod.createdAt)].getdate(),
                             updatedAt = dr[nameof(StorePilotTables.Tables.VisitPeriod.updatedAt)].getdate(),
                             periodType = dr[nameof(StorePilotTables.Tables.VisitPeriod.periodType)].getstring(),
@@ -343,7 +343,6 @@ namespace StorePilotManagement.Controllers.Api
 
                     km.CommandText = @"select * from Task with(nolock)";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@userId", session.userId);
                     DataTable dt = new DataTable();
                     using (SqlDataAdapter da = new SqlDataAdapter(km))
                     {
@@ -375,7 +374,7 @@ namespace StorePilotManagement.Controllers.Api
                             isRequired = dr[nameof(TaskTable.isRequired)].getbool(),
                             isDeleted = dr[nameof(TaskTable.isDeleted)].getbool(),
                             isSynced = dr[nameof(TaskTable.isSynced)].getbool(),
-                            createdById = dr[nameof(TaskTable.createdById)].Tamsayi(),
+                            createdByUuid = dr[nameof(TaskTable.createdByUuid)].getguid(),
                             createdAt = dr[nameof(TaskTable.createdAt)].getdate(),
                             updatedAt = dr[nameof(TaskTable.updatedAt)].getdate()
                         };

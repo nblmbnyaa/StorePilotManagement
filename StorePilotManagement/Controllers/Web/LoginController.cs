@@ -74,7 +74,7 @@ namespace StorePilotManagement.Controllers.Web
                     session.Temizle();
                     session.uuid = Guid.NewGuid();
                     session.sessionId = Guid.NewGuid().ToString();
-                    session.userId = user.id;
+                    session.userUuid = user.uuid;
                     session.userName = user.userName;
                     session.fullName = user.fullName;
                     session.token = Guid.NewGuid().ToString();

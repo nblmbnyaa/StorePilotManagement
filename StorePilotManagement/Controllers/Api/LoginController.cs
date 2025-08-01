@@ -32,7 +32,7 @@ namespace StorePilotManagement.Controllers.Api
                 {
                     con.Open();
                     var km = con.CreateCommand();
-                    User user = new User(null);
+                    User user = new User(km);
                     km.CommandText = "SELECT * FROM [User] with(nolock) WHERE userName = @userName AND password = @password";
                     km.Parameters.Clear();
                     km.Parameters.AddWithValue("@userName", input.Username);
@@ -55,12 +55,12 @@ namespace StorePilotManagement.Controllers.Api
                         //    roller.Add(row["RolUuid"].getguid());
                         //}
 
-                        Session session = new Session(null);
+                        Session session = new Session(km);
                         session.Temizle();
 
                         session.uuid = Guid.NewGuid();
                         session.sessionId = Guid.NewGuid().ToString();
-                        session.userId = user.id;
+                        session.userUuid = user.uuid;
                         session.userName = user.userName;
                         session.fullName = user.fullName;
                         session.token = Guid.NewGuid().ToString();

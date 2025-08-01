@@ -76,7 +76,7 @@ namespace StorePilotManagement.Controllers.Web
                 region.isActive = !model.IsPassive;
                 region.updatedAt = DateTime.Now;
                 region.createdAt = region.updatedAt;
-                region.createdById = session.userId;
+                region.createdByUuid = session.userUuid;
                 region.uuid = Guid.NewGuid();
                 region.id = region.Insert(km);
                 if (region.id <= 0)

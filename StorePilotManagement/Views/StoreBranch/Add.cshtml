@@ -28,17 +28,17 @@
 
             <div class="form-group mt-2">
                 <label>Firma</label>
-                <select asp-for="StoreId" asp-items="Model.AllStores" class="form-control">
+                <select asp-for="StoreUuid" asp-items="Model.AllStores" class="form-control">
                     <option value="">-- Seçiniz --</option>
                 </select>
-                <span asp-validation-for="StoreId" class="text-danger"></span>
+                <span asp-validation-for="StoreUuid" class="text-danger"></span>
             </div>
             <div class="form-group mt-2">
                 <label>Bölge</label>
-                <select asp-for="RegionId" asp-items="Model.AllRegions" class="form-control">
+                <select asp-for="RegionUuid" asp-items="Model.AllRegions" class="form-control">
                     <option value="">-- Seçiniz --</option>
                 </select>
-                <span asp-validation-for="RegionId" class="text-danger"></span>
+                <span asp-validation-for="RegionUuid" class="text-danger"></span>
             </div>
 
 
@@ -206,10 +206,10 @@
             </div>
             <div class="form-group mb-2">
                 <label>Sorumlu Kullanıcı</label>
-                <select asp-for="ResponsibleUserId" asp-items="Model.AllUsers" class="form-control">
+                <select asp-for="ResponsibleUserUuid" asp-items="Model.AllUsers" class="form-control">
                     <option value="">-- Seçiniz --</option>
                 </select>
-                <span asp-validation-for="ResponsibleUserId" class="text-danger"></span>
+                <span asp-validation-for="ResponsibleUserUuid" class="text-danger"></span>
             </div>
             
 

@@ -32,7 +32,7 @@ namespace StorePilotTables.Tables
         [Description("bit")] public bool isActive { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
         [Description("bit")] public bool isSynced { get; set; }
-        [Description("int")] public int createdById { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
 

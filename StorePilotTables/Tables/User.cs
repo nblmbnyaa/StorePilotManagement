@@ -43,9 +43,9 @@ namespace StorePilotTables.Tables
                     fullName = "Admin";
                     password = Yardimci.Encrypt("admin");
                     userType = (int)UserType.Admin;
-                    roleId = 0; // Varsayılan rol ID'si, gerekirse değiştirilebilir
-                    regionId = 0; // Varsayılan bölge ID'si, gerekirse değiştirilebilir
-                    createdBy = 0; // Oluşturan ID'si, gerekirse değiştirilebilir
+                    roleUuid = Guid.Empty; // Varsayılan rol ID'si, gerekirse değiştirilebilir
+                    regionUuid = Guid.Empty; // Varsayılan bölge ID'si, gerekirse değiştirilebilir
+                    createdByUuid = Guid.Empty; // Oluşturan ID'si, gerekirse değiştirilebilir
                     deviceId = ""; // Cihaz ID'si boş, gerekirse değiştirilebilir
                     isActive = true; // Kullanıcı aktif olarak işaretleniyor
                     isDeleted = false; // Kullanıcı silinmemiş olarak işaretleniyor
@@ -66,9 +66,9 @@ namespace StorePilotTables.Tables
         [Description("nvarchar-100")] public string fullName { get; set; }
         [Description("nvarchar-MAX")] public string password { get; set; }
         [Description("int")] public int userType { get; set; }
-        [Description("int")] public int roleId { get; set; }
-        [Description("int")] public int regionId { get; set; }
-        [Description("int")] public int createdBy { get; set; }
+        [Description("uniqueidentifier")] public Guid roleUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid regionUuid { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("nvarchar-255")] public string deviceId { get; set; }
         [Description("bit")] public bool isActive { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }

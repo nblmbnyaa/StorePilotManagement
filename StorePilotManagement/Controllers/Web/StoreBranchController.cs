@@ -41,9 +41,9 @@ namespace StorePilotManagement.Controllers.Web
                 List<StoreBranchViewModel> storeBranchViewModelList = new List<StoreBranchViewModel>();
                 foreach (DataRow row in dt.Rows)
                 {
-                    km.CommandText = "select * from BranchContact with(nolock) where storeBranchId=@storeBranchId";
+                    km.CommandText = "select * from BranchContact with(nolock) where storeBranchUuid=@storeBranchUuid";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@storeBranchId", row[nameof(StoreBranch.id)].Tamsayi());
+                    km.Parameters.AddWithValue("@storeBranchUuid", row[nameof(StoreBranch.uuid)].getguid());
                     DataTable yetkiliDt = new DataTable();
                     using (var daYetkili = new SqlDataAdapter(km))
                     {
@@ -53,8 +53,8 @@ namespace StorePilotManagement.Controllers.Web
                     var magaza = new StoreBranchViewModel
                     {
                         Uuid = row[nameof(StoreBranch.uuid)].getguid(),
-                        StoreId = row[nameof(StoreBranch.storeId)].Tamsayi(),
-                        RegionId = row[nameof(StoreBranch.regionId)].Tamsayi(),
+                        StoreUuid = row[nameof(StoreBranch.storeUuid)].getguid(),
+                        RegionUuid = row[nameof(StoreBranch.regionUuid)].getguid(),
                         BranchName = row[nameof(StoreBranch.branchName)].ToString(),
                         BranchNo = row[nameof(StoreBranch.branchNo)].ToString(),
                         Address = row[nameof(StoreBranch.address)].ToString(),
@@ -67,7 +67,7 @@ namespace StorePilotManagement.Controllers.Web
                         Phone = row[nameof(StoreBranch.phone)].ToString(),
                         Email = row[nameof(StoreBranch.email)].ToString(),
                         ExpectedVisitDuration = row[nameof(StoreBranch.expectedVisitDuration)].Tamsayi(),
-                        ResponsibleUserId = row[nameof(StoreBranch.responsibleUserId)].Tamsayi(),
+                        ResponsibleUserUuid = row[nameof(StoreBranch.responsibleUserUuid)].getguid(),
                         IsPassive = !row[nameof(StoreBranch.isActive)].getbool(),
                     };
                     foreach (DataRow yetkiliRow in yetkiliDt.Rows)
@@ -148,8 +148,8 @@ namespace StorePilotManagement.Controllers.Web
                 var storeBranch = new StoreBranch(null);
                 storeBranch.Temizle();
                 storeBranch.uuid = Guid.NewGuid();
-                storeBranch.storeId = model.StoreId;
-                storeBranch.regionId = model.RegionId;
+                storeBranch.storeUuid = model.StoreUuid;
+                storeBranch.regionUuid = model.RegionUuid;
                 storeBranch.branchName = model.BranchName;
                 storeBranch.branchNo = model.BranchNo;
                 storeBranch.address = model.Address;
@@ -162,9 +162,9 @@ namespace StorePilotManagement.Controllers.Web
                 storeBranch.phone = model.Phone;
                 storeBranch.email = model.Email;
                 storeBranch.expectedVisitDuration = model.ExpectedVisitDuration;
-                storeBranch.responsibleUserId = model.ResponsibleUserId;
+                storeBranch.responsibleUserUuid = model.ResponsibleUserUuid;
                 storeBranch.isActive = !model.IsPassive;
-                storeBranch.createdById = session.userId; // Kullanıcı ID'si
+                storeBranch.createdByUuid = session.userUuid; // Kullanıcı ID'si
                 storeBranch.createdAt = storeBranch.updatedAt = DateTime.Now;
                 storeBranch.id = storeBranch.Insert(km);
                 if (storeBranch.id <= 0)
@@ -177,7 +177,7 @@ namespace StorePilotManagement.Controllers.Web
                 VisitPeriod visitPeriod = new VisitPeriod(null);
                 visitPeriod.Temizle();
 
-                visitPeriod.storeBranchId = storeBranch.id; // Mağaza ID'si
+                visitPeriod.storeBranchUuid = storeBranch.uuid; // Mağaza ID'si
                 visitPeriod.periodPattern = ""; // Bu örnekte kullanılmıyor
                 visitPeriod.isDeleted = false; // Silinmemiş
                 visitPeriod.periodType = model.PeriodType; // "Weekly", "Monthly" gibi değerler
@@ -196,7 +196,7 @@ namespace StorePilotManagement.Controllers.Web
                 visitPeriod.monthlyType2Range = model.MonthlyType2Range; // Aylık tekrar aralığı
                 visitPeriod.monthlyType2Day = model.MonthlyType2Day; // Aylık tekrar günü 2
                 visitPeriod.createdAt = visitPeriod.updatedAt = DateTime.Now;
-                visitPeriod.createdById = session.userId; // Kullanıcı ID'si
+                visitPeriod.createdByUuid = session.userUuid; // Kullanıcı ID'si
                 visitPeriod.uuid = Guid.NewGuid();
                 visitPeriod.id = visitPeriod.Insert(km);
                 if (visitPeriod.id <= 0)
@@ -208,29 +208,12 @@ namespace StorePilotManagement.Controllers.Web
 
                 foreach (var y in model.Contacts)
                 {
-                    /*
-                     * id
-uuid
-storeBranchId
-fullName
-phone
-email
-role
-isMaster
-startDate
-endDate
-isActive
-isDeleted
-createdById
-createdAt
-updatedAt
-                     */
                     if (string.IsNullOrWhiteSpace(y.FullName)) continue;
 
                     var yetkili = new BranchContact(null);
                     yetkili.Temizle();
                     yetkili.uuid = Guid.NewGuid();
-                    yetkili.storeBranchId = storeBranch.id; // Mağaza ID'si
+                    yetkili.storeBranchUuid = storeBranch.uuid; // Mağaza ID'si
                     yetkili.fullName = y.FullName;
                     yetkili.phone = y.Phone;
                     yetkili.email = y.Email;
@@ -239,7 +222,7 @@ updatedAt
                     yetkili.startDate = y.StartDate;
                     yetkili.endDate = y.EndDate;
                     yetkili.isActive = !y.IsPassive;
-                    yetkili.createdById = session.userId; // Kullanıcı ID'si
+                    yetkili.createdByUuid = session.userUuid; // Kullanıcı ID'si
                     yetkili.createdAt = yetkili.updatedAt = DateTime.Now;
                     yetkili.id = yetkili.Insert(km);
                     if (yetkili.id <= 0)
@@ -282,16 +265,16 @@ updatedAt
 
                 VisitPeriod visitPeriod = new VisitPeriod(null);
                 visitPeriod.Temizle();
-                km.CommandText = "select * from VisitPeriod with(nolock) where storeBranchId=@storeBranchId";
+                km.CommandText = "select * from VisitPeriod with(nolock) where storeBranchUuid=@storeBranchUuid";
                 km.Parameters.Clear();
-                km.Parameters.AddWithValue("@storeBranchId", storeBranch.id);
+                km.Parameters.AddWithValue("@storeBranchUuid", storeBranch.uuid);
                 visitPeriod.ReadData(km);
 
                 storeBranchViewModel = new StoreBranchViewModel
                 {
                     Uuid = storeBranch.uuid,
-                    StoreId = storeBranch.storeId,
-                    RegionId = storeBranch.regionId,
+                    StoreUuid = storeBranch.storeUuid,
+                    RegionUuid = storeBranch.regionUuid,
                     BranchName = storeBranch.branchName,
                     BranchNo = storeBranch.branchNo,
                     Address = storeBranch.address,
@@ -304,7 +287,7 @@ updatedAt
                     Phone = storeBranch.phone,
                     Email = storeBranch.email,
                     ExpectedVisitDuration = storeBranch.expectedVisitDuration,
-                    ResponsibleUserId = storeBranch.responsibleUserId,
+                    ResponsibleUserUuid = storeBranch.responsibleUserUuid,
                     IsPassive = !storeBranch.isActive,
                     PeriodType = visitPeriod.periodType, // "Weekly", "Monthly" gibi değerler
                     WeeklyTypeRange = visitPeriod.weeklyTypeRange, // Haftalık tekrar aralığı
@@ -327,9 +310,9 @@ updatedAt
                     AllUsers = GetAllUsers(),
                 };
 
-                km.CommandText = "select * from BranchContact with(nolock) where storeBranchId=@storeBranchId";
+                km.CommandText = "select * from BranchContact with(nolock) where storeBranchUuid=@storeBranchUuid";
                 km.Parameters.Clear();
-                km.Parameters.AddWithValue("@storeBranchId", storeBranch.id);
+                km.Parameters.AddWithValue("@storeBranchUuid", storeBranch.uuid);
                 DataTable yetkiliDt = new DataTable();
                 using (var daYetkili = new SqlDataAdapter(km))
                 {
@@ -410,8 +393,8 @@ updatedAt
 
                 storeBranch.branchName = model.BranchName;
                 storeBranch.branchNo = model.BranchNo;
-                storeBranch.storeId = model.StoreId;
-                storeBranch.regionId = model.RegionId;
+                storeBranch.storeUuid = model.StoreUuid;
+                storeBranch.regionUuid = model.RegionUuid;
                 storeBranch.address = model.Address;
                 storeBranch.city = model.City;
                 storeBranch.district = model.District;
@@ -422,9 +405,9 @@ updatedAt
                 storeBranch.phone = model.Phone;
                 storeBranch.email = model.Email;
                 storeBranch.expectedVisitDuration = model.ExpectedVisitDuration;
-                storeBranch.responsibleUserId = model.ResponsibleUserId;
+                storeBranch.responsibleUserUuid = model.ResponsibleUserUuid;
                 storeBranch.isActive = !model.IsPassive; // Pasif ise false, aktif ise true
-                storeBranch.createdById = session.userId; // Kullanıcı ID'si
+                storeBranch.createdByUuid = session.userUuid; // Kullanıcı ID'si
                 storeBranch.updatedAt = DateTime.Now;
                 if (!storeBranch.Update(km))
                 {
@@ -434,12 +417,12 @@ updatedAt
                 }
 
                 VisitPeriod visitPeriod = new VisitPeriod(null);
-                km.CommandText = "SELECT * FROM VisitPeriod with(nolock) WHERE storeBranchId = @storeBranchId";
+                km.CommandText = "SELECT * FROM VisitPeriod with(nolock) WHERE storeBranchUuid = @storeBranchUuid";
                 km.Parameters.Clear();
-                km.Parameters.AddWithValue("@storeBranchId", storeBranch.id);
+                km.Parameters.AddWithValue("@storeBranchUuid", storeBranch.uuid);
                 visitPeriod.ReadData(km);
 
-                visitPeriod.storeBranchId = storeBranch.id; // Mağaza ID'si
+                visitPeriod.storeBranchUuid = storeBranch.uuid; // Mağaza ID'si
                 visitPeriod.periodPattern = ""; // Bu örnekte kullanılmıyor
                 visitPeriod.isDeleted = false; // Silinmemiş
                 visitPeriod.periodType = model.PeriodType; // "Weekly", "Monthly" gibi değerler
@@ -471,7 +454,7 @@ updatedAt
                 {
                     // Ekleme işlemi
                     visitPeriod.createdAt = visitPeriod.updatedAt = DateTime.Now;
-                    visitPeriod.createdById = session.userId; // Kullanıcı ID'si
+                    visitPeriod.createdByUuid = session.userUuid; // Kullanıcı ID'si
                     visitPeriod.uuid = Guid.NewGuid();
                     visitPeriod.id = visitPeriod.Insert(km);
                     if (visitPeriod.id <= 0)
@@ -492,7 +475,7 @@ updatedAt
                     if (branchContact.ReadData(km))
                     {
                         branchContact.uuid = yetkili.Uuid.getguid();
-                        branchContact.storeBranchId = storeBranch.id; // Mağaza ID'si
+                        branchContact.storeBranchUuid = storeBranch.uuid; // Mağaza ID'si
                         branchContact.fullName = yetkili.FullName;
                         branchContact.phone = yetkili.Phone;
                         branchContact.email = yetkili.Email;
@@ -513,7 +496,7 @@ updatedAt
                     {
                         branchContact.Temizle();
                         branchContact.uuid = Guid.NewGuid();
-                        branchContact.storeBranchId = storeBranch.id; // Mağaza ID'si
+                        branchContact.storeBranchUuid = storeBranch.uuid; // Mağaza ID'si
                         branchContact.fullName = yetkili.FullName;
                         branchContact.phone = yetkili.Phone;
                         branchContact.email = yetkili.Email;
@@ -522,7 +505,7 @@ updatedAt
                         branchContact.endDate = yetkili.EndDate;
                         branchContact.isMaster = yetkili.IsMaster;
                         branchContact.isActive = !yetkili.IsPassive; // Pasif ise false, aktif ise true
-                        branchContact.createdById = session.userId; // Kullanıcı ID'si
+                        branchContact.createdByUuid = session.userUuid; // Kullanıcı ID'si
                         branchContact.createdAt = branchContact.updatedAt = DateTime.Now;
 
                         branchContact.id = branchContact.Insert(km);
@@ -542,9 +525,9 @@ updatedAt
                 {
                     km.CommandText = $@"
 DELETE FROM BranchContact
-WHERE storeBranchId = @storeBranchId AND uuid NOT IN ({BranchContactList})";
+WHERE storeBranchUuid = @storeBranchUuid AND uuid NOT IN ({BranchContactList})";
                     km.Parameters.Clear();
-                    km.Parameters.AddWithValue("@storeBranchId", storeBranch.id);
+                    km.Parameters.AddWithValue("@storeBranchUuid", storeBranch.uuid);
                     int rowsAffected = km.ExecuteNonQuery();
                 }
 
@@ -611,7 +594,7 @@ WHERE storeBranchId = @storeBranchId AND uuid NOT IN ({BranchContactList})";
                     regions.Add(new SelectListItem
                     {
                         Text = row[nameof(Region.name)].ToString(),
-                        Value = row[nameof(Region.id)].Tamsayi().ToString()
+                        Value = row[nameof(Region.uuid)].getguid().ToString()
                     });
                 }
             }
@@ -641,7 +624,7 @@ WHERE storeBranchId = @storeBranchId AND uuid NOT IN ({BranchContactList})";
                     stores.Add(new SelectListItem
                     {
                         Text = row[nameof(Store.name)].ToString(),
-                        Value = row[nameof(Store.id)].Tamsayi().ToString()
+                        Value = row[nameof(Store.uuid)].getguid().ToString()
                     });
                 }
             }
@@ -671,7 +654,7 @@ WHERE storeBranchId = @storeBranchId AND uuid NOT IN ({BranchContactList})";
                     list.Add(new SelectListItem
                     {
                         Text = row[nameof(StorePilotTables.Tables.User.fullName)].ToString(),
-                        Value = row[nameof(StorePilotTables.Tables.User.id)].Tamsayi().ToString()
+                        Value = row[nameof(StorePilotTables.Tables.User.uuid)].getguid().ToString()
                     });
                 }
             }
