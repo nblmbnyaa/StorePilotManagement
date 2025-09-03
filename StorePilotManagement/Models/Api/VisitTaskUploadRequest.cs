@@ -2,9 +2,9 @@
 
 namespace StorePilotManagement.Models.Api
 {
-    public class VisitUploadRequest
+    public class VisitTaskUploadRequest
     {
         public Guid token { get; set; }
-        public Visit visit { get; set; }
+        public VisitTask visitTask { get; set; }
     }
 }

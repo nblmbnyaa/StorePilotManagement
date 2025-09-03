@@ -59,7 +59,6 @@ namespace StorePilotManagement.Controllers.Api
                         session.Temizle();
 
                         session.uuid = Guid.NewGuid();
-                        session.sessionId = Guid.NewGuid().ToString();
                         session.userUuid = user.uuid;
                         session.userName = user.userName;
                         session.fullName = user.fullName;
@@ -76,6 +75,7 @@ namespace StorePilotManagement.Controllers.Api
                         session.isSynced = true; // Senkronize edilmemiş
                         session.createdAt = DateTime.UtcNow;
                         session.updatedAt = DateTime.UtcNow;
+                        session.createdByUuid = user.uuid; // Oluşturan kullanıcı UUID'si
 
                         if (user.userType != StorePilotTables.Tables.User.UserType.Merchant.Tamsayi())
                         {

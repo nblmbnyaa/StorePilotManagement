@@ -16,7 +16,6 @@ namespace StorePilotTables.Tables
 
         [Description("int*")] public int id { get; set; }
         [Description("uniqueidentifier")] public Guid uuid { get; set; }
-        [Description("nvarchar-100")] public string sessionId { get; set; }
         [Description("uniqueidentifier")] public Guid userUuid { get; set; }
         [Description("nvarchar-50")] public string userName { get; set; }
         [Description("nvarchar-100")] public string fullName { get; set; }
@@ -29,11 +28,14 @@ namespace StorePilotTables.Tables
         [Description("nvarchar-100")] public string deviceId { get; set; }
         [Description("nvarchar-100")] public string deviceModel { get; set; }
         [Description("nvarchar-50")] public string appVersion { get; set; }
-        [Description("nvarchar-max")] public string errorMessage { get; set; }
+        [Description("nvarchar-255")] public string errorMessage { get; set; }
         [Description("bit")] public bool isDeleted { get; set; }
         [Description("bit")] public bool isSynced { get; set; }
+        [Description("uniqueidentifier")] public Guid createdByUuid { get; set; }
         [Description("datetime")] public DateTime createdAt { get; set; }
         [Description("datetime")] public DateTime updatedAt { get; set; }
+
+
 
 
         public bool TokenKontrol(SqlCommand km, Guid token)

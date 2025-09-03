@@ -3,24 +3,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using StorePilotManagement.Models.Api;
 using StorePilotTables.Tables;
-using StorePilotTables.Utilities;
-using System.Data;
 
 namespace StorePilotManagement.Controllers.Api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VisitController : ControllerBase
+    public class VisitTaskController : ControllerBase
     {
         private readonly IConfiguration _configuration;
 
-        public VisitController(IConfiguration configuration)
+        public VisitTaskController(IConfiguration configuration)
         {
             _configuration = configuration;
         }
 
-        [HttpPost("VisitUpload")]
-        public ActionResult<bool> VisitUpload([FromBody] VisitUploadRequest input)
+        [HttpPost("VisitTaskUpload")]
+        public ActionResult<bool> VisitTaskUpload([FromBody] VisitTaskUploadRequest input)
         {
             try
             {
@@ -44,10 +42,10 @@ namespace StorePilotManagement.Controllers.Api
                     SqlTransaction transaction = con.BeginTransaction();
                     km.Transaction = transaction;
 
-                    var visit = input.visit;
+                    var visitTask = input.visitTask;
 
-                    visit.updatedAt = DateTime.Now;
-                    visit.id = visit.Insert(km);
+                    visitTask.updatedAt = DateTime.Now;
+                    visitTask.id = visitTask.Insert(km);
 
 
                     transaction.Commit();
