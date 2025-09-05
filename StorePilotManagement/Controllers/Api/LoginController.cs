@@ -40,6 +40,15 @@ namespace StorePilotManagement.Controllers.Api
                     if (user.ReadData(km))
                     {
 
+                        if (user.isActive == false)
+                        {
+                            return BadRequest(new ProblemDetails
+                            {
+                                Status = 400,
+                                Title = "Geçersiz Veri",
+                                Detail = "Kullanıcı aktif değil. Lütfen yöneticinize başvurun."
+                            });
+                        }
 
                         List<Guid> roller = new List<Guid>();
                         //km.CommandText = "SELECT RolUuid FROM KULLANICI_ROLLERI with(nolock) WHERE KullaniciUuid=@KullaniciUuid";

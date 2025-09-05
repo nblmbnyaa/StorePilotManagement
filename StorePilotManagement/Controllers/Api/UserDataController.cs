@@ -42,7 +42,7 @@ namespace StorePilotManagement.Controllers.Api
                     }
 
 
-                    km.CommandText = @"select * from Store with(nolock) where id in (select storeUuid from StoreBranch with(nolock) where responsibleUserUuid=@userUuid)";
+                    km.CommandText = @"select * from Store with(nolock) where uuid in (select storeUuid from StoreBranch with(nolock) where responsibleUserUuid=@userUuid)";
                     km.Parameters.Clear();
                     km.Parameters.AddWithValue("@userUuid", session.userUuid);
                     DataTable dt = new DataTable();
