@@ -31,8 +31,11 @@ public class HomeController : BaseController
             conn.Open();
             var km = conn.CreateCommand();
 
-
+            new Attachment(km);
             new BranchContact(km);
+            new Inventory(km);
+            new InventoryStatus(km);
+            new InventoryType(km);
             new Region(km);
             new Session(km);
             new Store(km);
@@ -40,7 +43,9 @@ public class HomeController : BaseController
             (new TaskTable(null)).CreateTable(km, "Task");
             new User(km);
             new UserRole(km);
+            new Visit(km);
             new VisitPeriod(km);
+            new VisitTask(km);
 
         }
 
