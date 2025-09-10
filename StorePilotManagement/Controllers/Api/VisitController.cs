@@ -44,11 +44,29 @@ namespace StorePilotManagement.Controllers.Api
                     SqlTransaction transaction = con.BeginTransaction();
                     km.Transaction = transaction;
 
-                    var visit = input.visit;
-
+                    var visit = (new VisitDto()).ToVisit(input.visit);
+                    km.CommandText = "select id from Visit with(nolock) where uuid=@uuid";
+                    km.Parameters.Clear();
+                    km.Parameters.AddWithValue("@uuid", visit.uuid);
+                    visit.id = km.ExecuteScalar().Tamsayi();
                     visit.updatedAt = DateTime.Now;
-                    visit.id = visit.Insert(km);
-
+                    if (visit.id > 0)
+                    {
+                        if (!visit.Update(km))
+                        {
+                            transaction.Rollback();
+                            return BadRequest(new ProblemDetails { Title = "Hata", Detail = "Ziyaret kaydı güncellenemedi." + visit.hatamesaji });
+                        }
+                    }
+                    else
+                    {
+                        visit.id = visit.Insert(km);
+                        if (visit.id <= 0)
+                        {
+                            transaction.Rollback();
+                            return BadRequest(new ProblemDetails { Title = "Hata", Detail = "Ziyaret kaydı eklenemedi." + visit.hatamesaji });
+                        }
+                    }
 
                     transaction.Commit();
                     return Ok(true);
