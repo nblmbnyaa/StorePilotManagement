@@ -18,4 +18,8 @@
     <ProjectReference Include="..\StorePilotTables\StorePilotTables.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Attachments\" />
+  </ItemGroup>
+
 </Project>
